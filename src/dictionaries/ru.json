@@ -1,0 +1,16 @@
+{
+  "navigation": {
+    "home": "Главная",
+    "about": "О нас"
+  },
+  "page": {
+    "home": {
+      "title": "Здарова дома",
+      "description": "какое-то описание"
+    },
+    "about": {
+      "title": "О нас",
+      "description": "Только о нас и говорят"
+    }
+  }
+}

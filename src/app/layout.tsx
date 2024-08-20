@@ -1,16 +1,19 @@
-import { Inter } from "next/font/google";
-import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
+import Foother from "../components/foother/foother.component";
+import Header from "../components/header/header.component";
+import "../styles/globals.css";
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}): JSX.Element {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body>
+        <Header />
+        <main>{children}</main>
+        <Foother />
+      </body>
     </html>
   );
 }

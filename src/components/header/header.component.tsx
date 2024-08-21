@@ -4,6 +4,7 @@ import { getDictionary } from '../../lib/dictionary'
 import { Locale } from '../../../i18n.config'
 import LanguageSwitcher from '../languageSwitcher/languageSwitcher.component'
 
+
 interface HeaderProps {
   lang: Locale
 }

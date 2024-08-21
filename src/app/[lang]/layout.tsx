@@ -1,5 +1,5 @@
 import { Inter } from "next/font/google";
-import "./globals.css";
+import "../../styles/globals.css";
 import { Locale, i18n  } from '../../../i18n.config';
 import Header from '../../components/header/header.component';
 const inter = Inter({ subsets: ["latin"] });

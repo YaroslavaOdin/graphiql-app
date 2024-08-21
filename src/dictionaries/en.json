@@ -6,7 +6,6 @@
   },
 
   "page": {
-
     "home": {
       "title": "Home Page",
       "description": "Internationalization in NextJs 13 App router"

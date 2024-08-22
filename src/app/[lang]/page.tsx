@@ -9,7 +9,7 @@ export default async function Home({params: { lang }}:HomeProps) {
 
   const { page } = await getDictionary(lang)
   return (
-    <main className="">
+    <main >
       <p>{page.home.title}</p>
     </main>
   );

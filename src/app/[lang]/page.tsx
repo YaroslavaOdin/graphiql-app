@@ -6,7 +6,7 @@ interface HomeProps {
 } 
 
 export default async function Home({params: { lang }}:HomeProps) {
-
+  console.log(process.env.API_KEY)
   const { page } = await getDictionary(lang)
   return (
     <main >

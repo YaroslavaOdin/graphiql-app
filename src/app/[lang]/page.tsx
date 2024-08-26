@@ -1,16 +1,21 @@
-import { getDictionary } from '../../lib/dictionary';
+'use client';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { Locale } from '../../../i18n.config';
+import { auth } from '../../utils/firebaseConfig';
+import { useGetTextByLangQuery } from '../../store/reducers/apiLanguageSlice';
 
 interface HomeProps {
-  params: { lang: Locale }
-} 
+  params: { lang: Locale };
+}
 
-export default async function Home({params: { lang }}:HomeProps) {
+export default function Home({ params: { lang } }: HomeProps) {
+  const [user] = useAuthState(auth);
+  const { data } = useGetTextByLangQuery(lang);
 
-  const { page } = await getDictionary(lang)
   return (
-    <main >
-      <p>{page.home.title}</p>
+    <main>=
+      <p>{user?.displayName}</p>
+      <p>{data?.page.home.title}</p>
     </main>
   );
 }

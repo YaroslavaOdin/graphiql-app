@@ -1,6 +1,7 @@
 'use client';
 
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { validationSchema, validationSchemaType } from '../../../utils/validationSchema';
 import {
@@ -13,8 +14,11 @@ import {
 } from '../../../components/ui/form';
 import { Button } from '../../../components/ui/button';
 import { Input } from '../../../components/ui/input';
+import { auth } from '../../../utils/firebaseConfig';
+import { useRouter } from 'next/navigation';
+import { updateProfile } from 'firebase/auth';
 
-export default function HomePage(): JSX.Element {
+export default function Register(): JSX.Element {
   const form = useForm<validationSchemaType>({
     resolver: yupResolver(validationSchema),
     mode: 'onChange',
@@ -24,22 +28,37 @@ export default function HomePage(): JSX.Element {
       password: '',
     },
   });
+  const [createUser] = useCreateUserWithEmailAndPassword(auth);
+  const router = useRouter();
 
-  const onSubmit: SubmitHandler<validationSchemaType> = data => {
-    console.log(data);
+  const onSubmit: SubmitHandler<validationSchemaType> = async data => {
+    const { email, username, password } = data;
+    try {
+      const userCredential = await createUser(email, password);
+      const user = userCredential?.user;
+      if (user) {
+        updateProfile(user, { displayName: username });
+        router.push('/');
+      }
+    } catch (e) {
+      if (e instanceof Error) {
+        throw new Error(e.message);
+      }
+    }
   };
 
   return (
     <Form {...form}>
+      <div className='flex justify-center mt-[150px]'> 
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
           name="username"
           render={({ field }) => (
-            <FormItem className="m-0">
+            <FormItem className="m-0 w-[300px]">
               <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input placeholder="type your username" {...field} />
               </FormControl>
               <FormMessage>
                 {form.formState.errors.username?.message || (
@@ -60,7 +79,7 @@ export default function HomePage(): JSX.Element {
                 <Input
                   autoComplete="current-password"
                   type="password"
-                  placeholder="shadcn"
+                   placeholder="type your password"
                   {...field}
                 />
               </FormControl>
@@ -79,7 +98,7 @@ export default function HomePage(): JSX.Element {
             <FormItem className="m-0">
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input type="email" placeholder="shadcn" {...field} />
+                <Input type="email"  placeholder="type your email" {...field} />
               </FormControl>
               <FormMessage>
                 {form.formState.errors.username?.message || (
@@ -92,6 +111,7 @@ export default function HomePage(): JSX.Element {
 
         <Button type="submit">Submit</Button>
       </form>
+      </div>
     </Form>
   );
 }

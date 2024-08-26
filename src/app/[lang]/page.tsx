@@ -1,16 +1,18 @@
-import { getDictionary } from '../../lib/dictionary';
+'use client';
+
 import { Locale } from '../../../i18n.config';
+import { useGetTextByLangQuery } from '../../store/reducers/apiLanguageSlice';
 
 interface HomeProps {
-  params: { lang: Locale }
-} 
+  params: { lang: Locale };
+}
 
-export default async function Home({params: { lang }}:HomeProps) {
+export default function Home({ params: { lang } }: HomeProps) {
+  const { data } = useGetTextByLangQuery(lang);
 
-  const { page } = await getDictionary(lang)
   return (
-    <main >
-      <p>{page.home.title}</p>
+    <main>
+      <p>{data?.page.home.title}</p>
     </main>
   );
 }

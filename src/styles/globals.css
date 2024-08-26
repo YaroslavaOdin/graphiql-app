@@ -59,8 +59,6 @@
   }
 }
 
-
-
 @layer base {
   * {
     @apply border-border;
@@ -69,10 +67,9 @@
     @apply bg-background text-foreground;
   }
 }
-body[data-scroll-locked]{
+body[data-scroll-locked] {
   min-width: 100%;
 }
-
 
 .animatedHeader {
   background-color: rgb(11, 194, 72);

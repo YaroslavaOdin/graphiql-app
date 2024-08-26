@@ -1,19 +1,19 @@
 export interface DictionaryType {
-  navigation: Navigation
-  page: Page
+  navigation: Navigation;
+  page: Page;
 }
 
 export interface Navigation {
-  home: string
-  register: string
-  logIn: string
+  home: string;
+  register: string;
+  logIn: string;
 }
 
 export interface Page {
-  home: Home
+  home: Home;
 }
 
 export interface Home {
-  title: string
-  description: string
+  title: string;
+  description: string;
 }

@@ -1,8 +1,8 @@
-import { describe, expect, vi, it } from "vitest";
-import { render, screen } from "@testing-library/react";
-import SignIn from "../components/signInButton/signIn.component";
+import { describe, expect, vi, it } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import SignIn from '../components/signInButton/signIn.component';
 
-vi.mock("next/navigation", () => ({
+vi.mock('next/navigation', () => ({
   useRouter: () => ({
     replace: vi.fn(),
   }),
@@ -18,7 +18,7 @@ describe('SignIn Component', () => {
 
     render(<SignIn lang={lang} text={text} />);
     expect(screen.getByText(text)).toBeInTheDocument();
-    
+
     const linkElement = screen.getByRole('link', { name: text });
     expect(linkElement).toHaveAttribute('href', 'en/logIn');
   });

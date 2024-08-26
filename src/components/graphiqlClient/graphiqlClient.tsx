@@ -6,9 +6,11 @@ import { Input } from '../ui/input';
 import { cloneElement, isValidElement, useState } from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
 
-export default function GraphiQLClient( { children }): JSX.Element {
+export default function GraphiQLClient({ children }): JSX.Element {
   const [endpoint, setEndpoint] = useState<string>('https://rickandmortyapi.com/graphql');
-  const [query, setQuery] = useState<string>("{ characters(page: 2) { info { count } results { name } }}");
+  const [query, setQuery] = useState<string>(
+    '{ characters(page: 2) { info { count } results { name } }}',
+  );
 
   return (
     <div>
@@ -21,13 +23,13 @@ export default function GraphiQLClient( { children }): JSX.Element {
         SDL Url:
         <Input placeholder={`${endpoint}?sdl`} />
       </label>
-      <Accordion type='single' collapsible>
-        <AccordionItem value='headers'>
+      <Accordion type="single" collapsible>
+        <AccordionItem value="headers">
           <label>
             <AccordionTrigger>Headers:</AccordionTrigger>
-            <AccordionContent className='flex'>
-              <Input placeholder='Header Key'/>
-              <Input placeholder='Header Value' />
+            <AccordionContent className="flex">
+              <Input placeholder="Header Key" />
+              <Input placeholder="Header Value" />
               <Button>Add header</Button>
             </AccordionContent>
           </label>
@@ -41,10 +43,9 @@ export default function GraphiQLClient( { children }): JSX.Element {
         onChange={value => setQuery(value)}
       />
       <label>Response:</label>
-        {
-isValidElement(children)
-  ? cloneElement(children, { endpoint: endpoint, query: query}) 
-  : children }
+      {isValidElement(children)
+        ? cloneElement(children, { endpoint: endpoint, query: query })
+        : children}
     </div>
   );
 }

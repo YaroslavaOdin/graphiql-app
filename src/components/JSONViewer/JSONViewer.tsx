@@ -1,8 +1,9 @@
-import 'server-only'
   
 import Codemirror from '../codemirror/codemirror.component';
 
+
 export default async function JSONViewer({ endpoint, query }: { endpoint: string; query: string }) {
+
   function fetchGraphQL(value: string) {
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');

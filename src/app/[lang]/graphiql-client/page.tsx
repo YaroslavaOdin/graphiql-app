@@ -1,12 +1,19 @@
 import GraphiQLClient from '../../../components/graphiqlClient/graphiqlClient';
 import JSONViewer from '../../../components/JSONViewer/JSONViewer';
 
-export default function GraphiQLPage(): JSX.Element {
+interface GraphiQLPageProps {
+  searchParams: { query: string };
+}
+
+export default function GraphiQLPage({searchParams}:GraphiQLPageProps): JSX.Element {
+
+  
   return (
     <GraphiQLClient>
       <JSONViewer
         endpoint="https://rickandmortyapi.com/graphql"
-        query="{ characters(page: 2) { info { count } results { name } }}"
+        query={searchParams.query}
+        // query="{ characters(page: 3) { info { count } results { name } }}"
       ></JSONViewer>
     </GraphiQLClient>
   );

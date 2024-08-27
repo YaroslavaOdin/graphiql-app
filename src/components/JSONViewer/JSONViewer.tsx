@@ -1,4 +1,4 @@
-
+import 'server-only'
   
 import Codemirror from '../codemirror/codemirror.component';
 

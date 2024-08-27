@@ -1,4 +1,6 @@
-import ReactCodeMirror from '@uiw/react-codemirror';
+
+  
+import Codemirror from '../codemirror/codemirror.component';
 
 export default async function JSONViewer({ endpoint, query }: { endpoint: string; query: string }) {
   function fetchGraphQL(value: string) {
@@ -29,12 +31,8 @@ export default async function JSONViewer({ endpoint, query }: { endpoint: string
   const response = await fetchGraphQL(query);
 
   return (
-    <ReactCodeMirror
-      basicSetup={{
-        lineNumbers: false,
-      }}
-      readOnly={true}
-      value={response}
-    />
+
+    <Codemirror response={response}/>
+   
   );
 }

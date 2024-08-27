@@ -21,7 +21,7 @@ function Header({ lang }: HeaderProps) {
 
   useEffect(() => {
     getDictionary(lang).then(res => setDictionary(res));
-  }, []);
+  }, [lang]);
 
   useEffect(() => {
     window.addEventListener('scroll', isScroll);

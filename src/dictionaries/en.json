@@ -1,4 +1,3 @@
-
 {
   "navigation": {
     "home": "Home",
@@ -11,8 +10,5 @@
       "title": "Home Page",
       "description": "Internationalization in NextJs 13 App router"
     }
-
-    
-
   }
 }

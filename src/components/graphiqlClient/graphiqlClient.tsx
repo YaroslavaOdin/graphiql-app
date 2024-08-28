@@ -3,21 +3,28 @@
 import ReactCodeMirror from '@uiw/react-codemirror';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
-import { cloneElement, isValidElement, useState } from 'react';
+import { useState } from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
+import { useRouter } from 'next/navigation';
+import nextBase64 from 'next-base64';
 
-export default function GraphiQLClient({ children }): JSX.Element {
-  const [endpoint, setEndpoint] = useState<string>('https://rickandmortyapi.com/graphql');
-  const [query, setQuery] = useState<string>(
-    '{ characters(page: 2) { info { count } results { name } }}',
-  );
+export default function GraphiQLClient({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: { endpoint: string; query: string };
+}): JSX.Element {
+  const [endpoint, setEndpoint] = useState<string>('');
+  const [query, setQuery] = useState<string>('');
+  const router = useRouter();
 
   return (
     <div>
       <p>GraphiQL Client</p>
       <label>
         Endpoint
-        <Input onChange={e => setEndpoint(e.target.value)} />
+        <Input onChange={e => setEndpoint(e.target.value)} value={endpoint} />
       </label>
       <label>
         SDL Url:
@@ -40,12 +47,19 @@ export default function GraphiQLClient({ children }): JSX.Element {
         basicSetup={{
           lineNumbers: false,
         }}
-        onChange={value => setQuery(value)}
+        onChange={value => {
+          setQuery(value);
+          history.replaceState(
+            null,
+            '',
+            `/en/graphiql-client/GRAPHQL/${nextBase64.encode(endpoint).split('=').join('')}/${nextBase64.encode(value).split('=').join('')}`,
+          );
+          router.refresh();
+        }}
+        value={query}
       />
       <label>Response:</label>
-      {isValidElement(children)
-        ? cloneElement(children, { endpoint: endpoint, query: query })
-        : children}
+      {children}
     </div>
   );
 }

@@ -10,9 +10,6 @@ export default async function JSONViewer({ endpoint, query }: { endpoint: string
       variables: {},
     });
 
-    //  const encodedQuery = btoa(value);
-    //  const encodedEndpoint = btoa(endpoint);
-
     return fetch(endpoint, {
       method: 'POST',
       headers: myHeaders,
@@ -28,13 +25,5 @@ export default async function JSONViewer({ endpoint, query }: { endpoint: string
 
   const response = await fetchGraphQL(query);
 
-  return (
-    <ReactCodeMirror
-      basicSetup={{
-        lineNumbers: false,
-      }}
-      readOnly={true}
-      value={response}
-    />
-  );
+  return <ReactCodeMirror value={response} />;
 }

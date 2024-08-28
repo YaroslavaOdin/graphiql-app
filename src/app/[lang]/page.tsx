@@ -11,7 +11,7 @@ export default function Home({ params: { lang } }: HomeProps) {
   const { data } = useGetTextByLangQuery(lang);
 
   return (
-    <main>
+    <main className="min-h-screen">
       <p>{data?.page.home.title}</p>
     </main>
   );

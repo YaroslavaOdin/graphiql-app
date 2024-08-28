@@ -13,5 +13,12 @@
       "title": "О нас",
       "description": "Только о нас и говорят"
     }
+  },
+  "foother": {
+    "names": {
+      "alexander": "Александр",
+      "nikolai": "Николай",
+      "yaraslava": "Ярослава"
+    }
   }
 }

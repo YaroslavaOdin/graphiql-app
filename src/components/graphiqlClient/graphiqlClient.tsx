@@ -3,7 +3,7 @@
 import ReactCodeMirror from '@uiw/react-codemirror';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
 import { useRouter } from 'next/navigation';
 import nextBase64 from 'next-base64';
@@ -12,12 +12,25 @@ export default function GraphiQLClient({
   children,
   params,
 }: {
-  children: React.ReactNode;
+  children: React.JSX.Element;
   params: { endpoint: string; query: string };
 }): JSX.Element {
   const [endpoint, setEndpoint] = useState<string>('');
   const [query, setQuery] = useState<string>('');
   const router = useRouter();
+
+  useEffect(() => {
+    if (params && params.endpoint && params.query) {
+      setEndpoint(nextBase64.decode(params.endpoint));
+      setQuery(nextBase64.decode(params.query));
+    }
+  });
+
+  function HandleSendRequest() {
+    router.push(
+      `/en/graphiql-client/GRAPHQL/${nextBase64.encode(endpoint).split('=').join('')}/${nextBase64.encode(query).split('=').join('')}`,
+    );
+  }
 
   return (
     <div>
@@ -47,19 +60,14 @@ export default function GraphiQLClient({
         basicSetup={{
           lineNumbers: false,
         }}
-        onChange={value => {
-          setQuery(value);
-          history.replaceState(
-            null,
-            '',
-            `/en/graphiql-client/GRAPHQL/${nextBase64.encode(endpoint).split('=').join('')}/${nextBase64.encode(value).split('=').join('')}`,
-          );
-          router.refresh();
-        }}
+        onChange={value => setQuery(value)}
         value={query}
       />
-      <label>Response:</label>
-      {children}
+      <Button onClick={() => HandleSendRequest()}>Send request</Button>
+      <div>
+        <label>Response:</label>
+        {children}
+      </div>
     </div>
   );
 }

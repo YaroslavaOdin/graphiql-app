@@ -1,11 +1,11 @@
 'use client';
 
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
-  validationSchemaRegister,
-  validationSchemaTypeRegister,
+  validationSchemaSignIn,
+  validationSchemaTypeSignIn,
 } from '../../../utils/validationSchema';
 import {
   Form,
@@ -19,35 +19,33 @@ import { Button } from '../../../components/ui/button';
 import { Input } from '../../../components/ui/input';
 import { auth } from '../../../utils/firebaseConfig';
 import { useRouter } from 'next/navigation';
-import { updateProfile } from 'firebase/auth';
 import { useEffect } from 'react';
 
 export default function Register(): JSX.Element {
-  const form = useForm<validationSchemaTypeRegister>({
-    resolver: yupResolver(validationSchemaRegister),
+  const form = useForm<validationSchemaTypeSignIn>({
+    resolver: yupResolver(validationSchemaSignIn),
     mode: 'onChange',
     defaultValues: {
-      username: '',
       email: '',
       password: '',
     },
   });
-  const [createUser, , , error] = useCreateUserWithEmailAndPassword(auth);
+  const [signInUser, , , error] = useSignInWithEmailAndPassword(auth);
   const router = useRouter();
-
+  console.log(error);
   useEffect(() => {
     if (error) {
       form.setError('email', { type: 'server', message: error?.message });
     }
   }, [error, form]);
 
-  const onSubmit: SubmitHandler<validationSchemaTypeRegister> = async data => {
-    const { email, username, password } = data;
+  const onSubmit: SubmitHandler<validationSchemaTypeSignIn> = async data => {
+    const { email, password } = data;
     try {
-      const userCredential = await createUser(email, password);
+      const userCredential = await signInUser(email, password);
       const user = userCredential?.user;
+      console.log(userCredential);
       if (user) {
-        updateProfile(user, { displayName: username });
         router.push('/');
       }
     } catch (e) {
@@ -63,27 +61,9 @@ export default function Register(): JSX.Element {
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
             control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem className="m-0 w-[300px]">
-                <FormLabel>Username</FormLabel>
-                <FormControl>
-                  <Input placeholder="type your username" {...field} />
-                </FormControl>
-                <FormMessage>
-                  {form.formState.errors.username?.message || (
-                    <span className="invisible">&nbsp;</span>
-                  )}
-                </FormMessage>
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
             name="password"
             render={({ field }) => (
-              <FormItem className="m-0">
+              <FormItem className="m-0 w-[300px]">
                 <FormLabel>Password</FormLabel>
                 <FormControl>
                   <Input

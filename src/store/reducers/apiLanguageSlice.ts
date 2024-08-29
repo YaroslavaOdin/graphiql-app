@@ -3,7 +3,6 @@ import { Locale } from '../../../i18n.config';
 import { DictionaryType } from '../../interfaces/interfaces';
 import { getDictionary } from '../../lib/dictionary';
 
-
 const languageApi = createApi({
   reducerPath: 'languageApi',
   baseQuery: fetchBaseQuery({ baseUrl: '/' }),

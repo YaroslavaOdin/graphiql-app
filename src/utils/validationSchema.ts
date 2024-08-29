@@ -6,4 +6,4 @@ export const validationSchema = Yup.object().shape({
   password: Yup.string().required().min(6),
 });
 
-export type validationSchemaType = Yup.InferType<typeof validationSchema>
+export type validationSchemaType = Yup.InferType<typeof validationSchema>;

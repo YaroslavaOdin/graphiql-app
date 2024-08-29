@@ -2,7 +2,7 @@
   "navigation": {
     "home": "Главная",
     "register": "Регистрация",
-     "logIn": "Войти"
+    "logIn": "Войти"
   },
   "page": {
     "home": {

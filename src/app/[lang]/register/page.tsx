@@ -17,6 +17,7 @@ import { Input } from '../../../components/ui/input';
 import { auth } from '../../../utils/firebaseConfig';
 import { useRouter } from 'next/navigation';
 import { updateProfile } from 'firebase/auth';
+// import { selectUser } from '../../../stnpm
 
 export default function Register(): JSX.Element {
   const form = useForm<validationSchemaType>({
@@ -30,6 +31,7 @@ export default function Register(): JSX.Element {
   });
   const [createUser] = useCreateUserWithEmailAndPassword(auth);
   const router = useRouter();
+  // const user = useSelector(selectUser )
 
   const onSubmit: SubmitHandler<validationSchemaType> = async data => {
     const { email, username, password } = data;
@@ -49,68 +51,68 @@ export default function Register(): JSX.Element {
 
   return (
     <Form {...form}>
-      <div className='flex justify-center mt-[150px]'> 
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem className="m-0 w-[300px]">
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input placeholder="type your username" {...field} />
-              </FormControl>
-              <FormMessage>
-                {form.formState.errors.username?.message || (
-                  <span className="invisible">&nbsp;</span>
-                )}
-              </FormMessage>
-            </FormItem>
-          )}
-        />
+      <div className="flex justify-center mt-[150px]">
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <FormField
+            control={form.control}
+            name="username"
+            render={({ field }) => (
+              <FormItem className="m-0 w-[300px]">
+                <FormLabel>Username</FormLabel>
+                <FormControl>
+                  <Input placeholder="type your username" {...field} />
+                </FormControl>
+                <FormMessage>
+                  {form.formState.errors.username?.message || (
+                    <span className="invisible">&nbsp;</span>
+                  )}
+                </FormMessage>
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem className="m-0">
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input
-                  autoComplete="current-password"
-                  type="password"
-                   placeholder="type your password"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage>
-                {form.formState.errors.username?.message || (
-                  <span className="invisible">&nbsp;</span>
-                )}
-              </FormMessage>
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem className="m-0">
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input type="email"  placeholder="type your email" {...field} />
-              </FormControl>
-              <FormMessage>
-                {form.formState.errors.username?.message || (
-                  <span className="invisible">&nbsp;</span>
-                )}
-              </FormMessage>
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem className="m-0">
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input
+                    autoComplete="current-password"
+                    type="password"
+                    placeholder="type your password"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage>
+                  {form.formState.errors.username?.message || (
+                    <span className="invisible">&nbsp;</span>
+                  )}
+                </FormMessage>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem className="m-0">
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input type="email" placeholder="type your email" {...field} />
+                </FormControl>
+                <FormMessage>
+                  {form.formState.errors.username?.message || (
+                    <span className="invisible">&nbsp;</span>
+                  )}
+                </FormMessage>
+              </FormItem>
+            )}
+          />
 
-        <Button type="submit">Submit</Button>
-      </form>
+          <Button type="submit">Submit</Button>
+        </form>
       </div>
     </Form>
   );

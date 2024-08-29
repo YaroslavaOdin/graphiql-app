@@ -5,13 +5,13 @@ import { usePathname, useRouter } from 'next/navigation';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { SelectGroup } from '@radix-ui/react-select';
 import { useState } from 'react';
-import { Locale } from '../../../i18n.config'
+import { Locale } from '../../../i18n.config';
 
 interface LanguageSwitcherProps {
-  lang: Locale
+  lang: Locale;
 }
 
-function LanguageSwitcher({lang}:LanguageSwitcherProps) {
+function LanguageSwitcher({ lang }: LanguageSwitcherProps) {
   const pathName = usePathname();
   const router = useRouter();
 
@@ -24,19 +24,17 @@ function LanguageSwitcher({lang}:LanguageSwitcherProps) {
     return segments.join('/');
   };
 
-  const handleLanguageChange = (value:Locale) => {
+  const handleLanguageChange = (value: Locale) => {
     setSelectedLocale(value);
     router.push(redirectedPathName(value));
   };
 
-
-
   return (
-    <Select  onValueChange={e=> handleLanguageChange(e as Locale)} value={selectedLocale}>
+    <Select onValueChange={e => handleLanguageChange(e as Locale)} value={selectedLocale}>
       <SelectTrigger className="w-32">
         <SelectValue defaultValue={lang} />
       </SelectTrigger>
-      <SelectContent >
+      <SelectContent>
         <SelectGroup defaultValue={lang}>
           {i18n.locales.map((locale, i) => (
             <SelectItem key={i} value={locale}>

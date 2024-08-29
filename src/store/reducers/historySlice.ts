@@ -12,6 +12,7 @@ const initialState: historyTypes = {
 export const historySlice = createSlice({
   name: 'history',
   initialState,
+
   reducers: {},
 });
 

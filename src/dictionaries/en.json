@@ -11,7 +11,16 @@
       "description": "Internationalization in NextJs 13 App router"
     },
     "graphiql": {
-      "title": "GraphiQL Client"
+      "title": "GraphiQL Client",
+      "endpoint": "Endpoint:",
+      "sdl": "SDL Url:",
+      "headers": "Headers:",
+      "key": "Header key",
+      "value": "Header value",
+      "add": "Add header:",
+      "query": "Query:",
+      "send": "Send request",
+      "response": "Response:"
     }
   }
 }

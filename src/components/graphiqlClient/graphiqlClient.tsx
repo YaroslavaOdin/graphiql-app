@@ -5,67 +5,66 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { useEffect, useState } from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import nextBase64 from 'next-base64';
+import { useGetTextByLangQuery } from '../../store/reducers/apiLanguageSlice';
+import { Locale } from '../../../i18n.config';
 
-export default function GraphiQLClient({
-  children,
-  params,
-}: {
-  children: React.JSX.Element;
-  params: { endpoint: string; query: string };
-}): JSX.Element {
-  const [endpoint, setEndpoint] = useState<string>('');
-  const [query, setQuery] = useState<string>('');
+export default function GraphiQLClient({ children }: { children: React.JSX.Element }): JSX.Element {
+  const [endpointState, setEndpointState] = useState<string>('');
+  const [queryState, setQueryState] = useState<string>('');
   const router = useRouter();
+  const { lang, endpoint, query }: { lang: Locale; endpoint: string; query: string } = useParams();
+
+  const { data } = useGetTextByLangQuery(lang);
 
   useEffect(() => {
-    if (params && params.endpoint && params.query) {
-      setEndpoint(nextBase64.decode(params.endpoint));
-      setQuery(nextBase64.decode(params.query));
+    if (endpoint && query) {
+      setEndpointState(nextBase64.decode(endpoint));
+      setQueryState(nextBase64.decode(query));
     }
-  });
+  }, [endpoint, query]);
 
   function HandleSendRequest() {
     router.push(
-      `/en/graphiql-client/GRAPHQL/${nextBase64.encode(endpoint).split('=').join('')}/${nextBase64.encode(query).split('=').join('')}`,
+      `/en/graphiql-client/GRAPHQL/${nextBase64.encode(endpointState).split('=').join('')}/${nextBase64.encode(queryState).split('=').join('')}`,
     );
   }
 
   return (
     <div>
-      <p>GraphiQL Client</p>
+      <p>{data?.page.graphiql.title}</p>
       <label>
-        Endpoint
-        <Input onChange={e => setEndpoint(e.target.value)} value={endpoint} />
+        {data?.page.graphiql.endpoint}
+        <Input onChange={e => setEndpointState(e.target.value)} value={endpointState} />
       </label>
       <label>
-        SDL Url:
-        <Input placeholder={`${endpoint}?sdl`} />
+        {data?.page.graphiql.sdl}
+        <Input placeholder={`${endpointState}?sdl`} />
       </label>
       <Accordion type="single" collapsible>
         <AccordionItem value="headers">
           <label>
-            <AccordionTrigger>Headers:</AccordionTrigger>
+            <AccordionTrigger>{data?.page.graphiql.headers}</AccordionTrigger>
             <AccordionContent className="flex">
-              <Input placeholder="Header Key" />
-              <Input placeholder="Header Value" />
-              <Button>Add header</Button>
+              <Input placeholder={data?.page.graphiql.key} />
+              <Input placeholder={data?.page.graphiql.value} />
+              <Button>{data?.page.graphiql.add}</Button>
             </AccordionContent>
           </label>
         </AccordionItem>
       </Accordion>
-      <label>Query:</label>
+      <label>{data?.page.graphiql.query}</label>
       <ReactCodeMirror
         basicSetup={{
           lineNumbers: false,
         }}
-        onChange={value => setQuery(value)}
-        value={query}
+        onChange={value => setQueryState(value)}
+        value={queryState}
       />
-      <Button onClick={() => HandleSendRequest()}>Send request</Button>
+      <Button onClick={() => HandleSendRequest()}>{data?.page.graphiql.send}</Button>
       <div>
-        <label>Response:</label>
+        <label>{data?.page.graphiql.response}</label>
         {children}
       </div>
     </div>

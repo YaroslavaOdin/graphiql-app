@@ -19,10 +19,17 @@ import { Button } from '../../../components/ui/button';
 import { Input } from '../../../components/ui/input';
 import { auth } from '../../../utils/firebaseConfig';
 import { useRouter } from 'next/navigation';
-import { updateProfile } from 'firebase/auth';
+import { onAuthStateChanged, updateProfile } from 'firebase/auth';
 import { useEffect } from 'react';
+import { Locale } from '../../../../i18n.config';
+import { useGetTextByLangQuery } from '../../../store/reducers/apiLanguageSlice';
+import ProgressPassword from '../../../components/progressPassword/progressPassword.component';
 
-export default function Register(): JSX.Element {
+interface RegisterProps {
+  params: { lang: Locale };
+}
+
+export default function Register({ params: { lang } }: RegisterProps): JSX.Element {
   const form = useForm<validationSchemaTypeRegister>({
     resolver: yupResolver(validationSchemaRegister),
     mode: 'onChange',
@@ -32,8 +39,17 @@ export default function Register(): JSX.Element {
       password: '',
     },
   });
+  const { data } = useGetTextByLangQuery(lang);
   const [createUser, , , error] = useCreateUserWithEmailAndPassword(auth);
   const router = useRouter();
+  const password = form.watch('password');
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async user => {
+      if (user) router.push('/');
+    });
+    return () => unsubscribe();
+  }, [router]);
 
   useEffect(() => {
     if (error) {
@@ -66,9 +82,9 @@ export default function Register(): JSX.Element {
             name="username"
             render={({ field }) => (
               <FormItem className="m-0 w-[300px]">
-                <FormLabel>Username</FormLabel>
+                <FormLabel>{data?.page.register.username}</FormLabel>
                 <FormControl>
-                  <Input placeholder="type your username" {...field} />
+                  <Input placeholder={data?.page.register.placeholderUsername} {...field} />
                 </FormControl>
                 <FormMessage>
                   {form.formState.errors.username?.message || (
@@ -84,15 +100,17 @@ export default function Register(): JSX.Element {
             name="password"
             render={({ field }) => (
               <FormItem className="m-0">
-                <FormLabel>Password</FormLabel>
+                <FormLabel>{data?.page.register.password}</FormLabel>
+                <ProgressPassword password={password} />
                 <FormControl>
                   <Input
                     autoComplete="current-password"
                     type="password"
-                    placeholder="type your password"
+                    placeholder={data?.page.register.placeholderPassword}
                     {...field}
                   />
                 </FormControl>
+
                 <FormMessage>
                   {form.formState.errors.password?.message || (
                     <span className="invisible">&nbsp;</span>
@@ -106,9 +124,14 @@ export default function Register(): JSX.Element {
             name="email"
             render={({ field }) => (
               <FormItem className="m-0">
-                <FormLabel>Email</FormLabel>
+                <FormLabel>{data?.page.register.email}</FormLabel>
                 <FormControl>
-                  <Input type="email" placeholder="type your email" {...field} />
+                  <Input
+                    className="m-0"
+                    type="email"
+                    placeholder={data?.page.register.placeholderEmail}
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage>
                   {form.formState.errors.email?.message || (
@@ -119,7 +142,7 @@ export default function Register(): JSX.Element {
             )}
           />
 
-          <Button type="submit">Submit</Button>
+          <Button type="submit">{data?.page.register.submit}</Button>
         </form>
       </div>
     </Form>

@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { User } from 'firebase/auth';
 import { delay } from '../../utils/functionHelpers';
+import { Button } from '../../components/ui/button';
+import { useRouter } from 'next/navigation';
 
 interface HomeProps {
   params: { lang: Locale };
@@ -14,8 +16,9 @@ interface HomeProps {
 
 export default function Home({ params: { lang } }: HomeProps) {
   const { data } = useGetTextByLangQuery(lang);
+  const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
-  console.log(user);
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async user => {
       await delay(400);
@@ -26,8 +29,10 @@ export default function Home({ params: { lang } }: HomeProps) {
 
   return (
     <main>
-      <p>{user?.displayName}</p>
-      <p>{data?.page.home.title}</p>
+      <p>
+        {data?.page.home.greeting} <span>{user?.displayName}</span>
+      </p>
+      <Button onClick={() => router.push('/')}>{data?.page.home.nameOfPage}</Button>
     </main>
   );
 }

@@ -6,12 +6,17 @@
   },
   "page": {
     "home": {
-      "title": "Здарова дома",
-      "description": "какое-то описание"
+      "nameOfPage": "Главная страница",
+      "greeting": "Добро пожаловать обратно"
     },
-    "about": {
-      "title": "О нас",
-      "description": "Только о нас и говорят"
+    "register": {
+      "username": "Имя пользователя",
+      "password": "Пароль",
+      "email": "Email",
+      "submit": "Отправить",
+      "placeholderUsername": "введите ваше имя",
+      "placeholderPassword": "введите пароль",
+      "placeholderEmail": "введите email"
     }
   }
 }

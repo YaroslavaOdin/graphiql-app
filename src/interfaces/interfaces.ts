@@ -11,9 +11,20 @@ export interface Navigation {
 
 export interface Page {
   home: Home;
+  register: Register;
 }
 
 export interface Home {
-  title: string;
-  description: string;
+  nameOfPage: string;
+  greeting: string;
+}
+
+export interface Register {
+  username: string;
+  password: string;
+  email: string;
+  submit: string;
+  placeholderUsername: string;
+  placeholderPassword: string;
+  placeholderEmail: string;
 }

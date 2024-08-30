@@ -7,8 +7,17 @@
 
   "page": {
     "home": {
-      "title": "Home Page",
-      "description": "Internationalization in NextJs 13 App router"
+      "nameOfPage": "Main Page",
+      "greeting": "Welcome Back"
+    },
+    "register": {
+      "username": "Username",
+      "password": "Password",
+      "email": "Email",
+      "submit": "Submit",
+      "placeholderUsername": "type your username",
+      "placeholderPassword": "type your password",
+      "placeholderEmail": "type your email"
     }
   }
 }

@@ -10,7 +10,7 @@ import { delay } from '../../utils/functionHelpers';
 import { Button } from '../../components/ui/button';
 import { useRouter } from 'next/navigation';
 
-interface HomeProps {
+export interface HomeProps {
   params: { lang: Locale };
 }
 

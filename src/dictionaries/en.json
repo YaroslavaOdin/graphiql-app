@@ -4,11 +4,17 @@
     "register": "Sign Up",
     "logIn": "Sign In"
   },
-
   "page": {
     "home": {
       "title": "Home Page",
       "description": "Internationalization in NextJs 13 App router"
+    }
+  },
+  "foother": {
+    "names": {
+      "alexander": "Aleksandr",
+      "nikolai": "Nikolai",
+      "yaraslava": "Yaraslava"
     }
   }
 }

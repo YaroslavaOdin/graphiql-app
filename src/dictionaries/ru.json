@@ -25,5 +25,12 @@
       "send": "Отправить запрос",
       "response": "Ответ:"
     }
+  },
+  "foother": {
+    "names": {
+      "alexander": "Александр",
+      "nikolai": "Николай",
+      "yaraslava": "Ярослава"
+    }
   }
 }

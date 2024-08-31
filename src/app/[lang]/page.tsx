@@ -30,7 +30,7 @@ export default function Home({ params: { lang } }: HomeProps) {
   return (
     <main>
       <p>
-        {data?.page.home.greeting} <span role='displayName'>{user?.displayName}</span>
+        {data?.page.home.greeting} <span role="displayName">{user?.displayName}</span>
       </p>
       <Button onClick={() => router.push('/')}>{data?.page.home.nameOfPage}</Button>
     </main>

@@ -97,7 +97,7 @@ export default function LogIn({ params: { lang } }: LogInProps): JSX.Element {
             render={({ field }) => (
               <FormItem className="m-0">
                 <FormLabel>{data?.page.register.email}</FormLabel>
-              
+
                 <FormControl>
                   <Input
                     type="email"

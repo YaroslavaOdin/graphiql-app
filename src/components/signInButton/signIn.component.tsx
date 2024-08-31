@@ -11,6 +11,7 @@ interface SignInProps {
 
 function SignIn({ lang, text }: SignInProps) {
   const pathname = usePathname();
+
   const arrayPathname = pathname.split('/');
   const router = useRouter();
   return (

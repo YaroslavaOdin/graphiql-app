@@ -1,74 +1,85 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { cleanup, getByRole, queryByRole, render, screen, waitFor } from '@testing-library/react';
 import MainPage from '../app/[lang]/page';
-import { describe, expect, vi, it, } from 'vitest';
+import { describe, expect, vi, it, afterEach, Mock } from 'vitest';
 import { Locale } from '../../i18n.config';
 import { useGetTextByLangQuery } from '../store/reducers/apiLanguageSlice';
 import { onAuthStateChanged } from 'firebase/auth';
-// import { auth } from '../utils/firebaseConfig';
+import { renderWithProviders } from '../utils/test-redux';
+import { mockDataForRTKHookInMainPage, mockUser } from '../utils/mock/mockData';
+import { User } from 'firebase/auth';
+
+vi.mock('firebase/auth', () => ({
+  onAuthStateChanged: vi.fn(),
+  getAuth: vi.fn(),
+}));
+
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+  }),
+}));
+
+interface ApiLanguageSlice {
+  useGetTextByLangQuery: Mock;
+}
 
 
-
-
-// vi.mock('firebase/auth', () => ({
-//   onAuthStateChanged: vi.fn(),
-// }));
-
-vi.mock("firebase/auth", async (importOriginal) => {
-  const actual = await importOriginal()
+vi.mock('../store/reducers/apiLanguageSlice', async (importOriginal) => {
+  const actual:ApiLanguageSlice = await importOriginal();
   return {
     ...actual,
-    onAuthStateChanged: vi.fn(), 
-  }
-})
-
-
-vi.mock('firebase/app', () => {
-
-  return {
-    // ...actualFirebaseApp,
-    initializeApp: vi.fn((config) => {
-      // Simulate app initialization
-      return { name: '[DEFAULT]', options: config };
-    }),
-    getApps: vi.fn(() => [{ name: '[DEFAULT]' }]), // Simulate that the app is already initialized
-    getApp: vi.fn(() => ({ name: '[DEFAULT]' })), // Return a mock app instance
+    useGetTextByLangQuery: vi.fn(),
   };
 });
 
-// vi.mock('../../store/reducers/apiLanguageSlice', () => ({
-//   useGetTextByLangQuery: vi.fn(),
-// }));
+const mockAuthStateChanged = onAuthStateChanged as Mock;
+const mockUseGetTextByLangQuery = useGetTextByLangQuery as Mock
+
+const mockUser = {
+  displayName: 'John Doe',
+} as User;
+
 
 describe('Home component', () => {
-  it('renders correctly with given params', () => {
-    const params = { lang: 'en' as Locale };
-    // const mockUser = { displayName: 'Test User' };
-
-    // // Mock Firebase authentication behavior
-    // mocked(onAuthStateChanged).mockImplementation((auth, callback) => {
-    //   callback(mockUser); // simulate a logged-in user
-    //   return vi.fn(); // return a mock unsubscribe function
-    // });
-
-    // // Mock API response for text by language
-    // mocked(useGetTextByLangQuery).mockReturnValue({
-    //   data: {
-    //     page: {
-    //       home: {
-    //         greeting: 'Hello',
-    //         nameOfPage: 'Home Page',
-    //       },
-    //     },
-    //   },
-    // });
-
-
-    render(<MainPage params={params} />);
-
-    // // Assertions
-    // expect(screen.getByText(/Hello/)).toBeInTheDocument();
-    // expect(screen.getByText(/Test User/)).toBeInTheDocument();
-    // expect(screen.getByText(/Home Page/)).toBeInTheDocument();
+  afterEach(() => {
+    cleanup();
+    vi.clearAllMocks();
   });
+  const params = { lang: 'en' as Locale };
+ 
+
+  it('renders correctly with given params', () => {
+    const unsubscribeMock = vi.fn();
+    mockAuthStateChanged.mockImplementation((auth, callback) => {
+      callback(null); 
+      return unsubscribeMock;
+    });
+    
+    mockUseGetTextByLangQuery.mockReturnValue(mockDataForRTKHookInMainPage);
+
+    renderWithProviders(<MainPage params={params} />);
+    const greetingTitle = screen.getByText(/welcome back/i)
+
+    expect(greetingTitle).toBeInTheDocument();
+  });
+
+  it('renders user name if user is registered', async() => {
+
+    const unsubscribeMock = vi.fn();
+    mockAuthStateChanged.mockImplementation((auth, callback) => {
+      callback(mockUser); 
+      return unsubscribeMock;
+    });
+
+    // const s =  await screen.findByRole("displayName")
+
+    // expect(s).toBeInTheDocument()
+    // expect(mockAuthStateChanged).toHaveBeenCalled()
+    
+    mockUseGetTextByLangQuery.mockReturnValue(mockDataForRTKHookInMainPage);
+    renderWithProviders(<MainPage params={params} />);
+    screen.logTestingPlaygroundURL()
+  }) 
+
 });

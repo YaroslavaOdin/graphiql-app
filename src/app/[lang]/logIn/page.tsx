@@ -82,6 +82,7 @@ export default function LogIn({ params: { lang } }: LogInProps): JSX.Element {
                     {...field}
                   />
                 </FormControl>
+                <ProgressPassword password={password} />
                 <FormMessage>
                   {form.formState.errors.password?.message || (
                     <span className="invisible">&nbsp;</span>
@@ -96,7 +97,7 @@ export default function LogIn({ params: { lang } }: LogInProps): JSX.Element {
             render={({ field }) => (
               <FormItem className="m-0">
                 <FormLabel>{data?.page.register.email}</FormLabel>
-                <ProgressPassword password={password} />
+              
                 <FormControl>
                   <Input
                     type="email"

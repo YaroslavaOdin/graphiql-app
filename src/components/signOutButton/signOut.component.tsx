@@ -17,3 +17,4 @@ function SignOut({ text }: SignOutProps) {
 }
 
 export default SignOut;
+

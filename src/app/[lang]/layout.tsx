@@ -5,6 +5,7 @@ import '../../styles/globals.css';
 import { Locale, i18n } from '../../../i18n.config';
 import Header from '../../components/header/header.component';
 import ReduxProvider from '../../hoc/ReduxProvider';
+import Foother from '../../components/foother/foother.component';
 const inter = Inter({ subsets: ['latin'] });
 
 export async function generateStaticParams() {
@@ -23,6 +24,7 @@ export default function RootLayout({ children, params }: RootLayoutProps) {
         <ReduxProvider>
           <Header lang={params.lang} />
           {children}
+          <Foother lang={params.lang} />
         </ReduxProvider>
       </body>
     </html>

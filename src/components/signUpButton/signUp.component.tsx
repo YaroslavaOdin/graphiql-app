@@ -24,3 +24,4 @@ function SignUp({ lang, text }: SignUpProps) {
 }
 
 export default SignUp;
+

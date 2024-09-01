@@ -7,13 +7,6 @@ export const rootReducer = combineReducers({
   [apiLanguageSlice.reducerPath]: apiLanguageSlice.reducer,
 });
 
-// export function setupStore(preloadedState?: Partial<RootState>): Store<RootState> {
-//   return configureStore({
-//     reducer: rootReducer,
-//     middleware: getDefaultMiddleware => getDefaultMiddleware().concat(apiLanguageSlice.middleware),
-//     preloadedState,
-//   });
-// }
 
 export const makeStore = (preloadedState?: Partial<RootState>) => {
   return configureStore({

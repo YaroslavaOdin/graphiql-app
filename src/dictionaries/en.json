@@ -5,7 +5,6 @@
     "logIn": "Sign In",
     "logOut": "Log Out"
   },
-
   "page": {
     "home": {
       "nameOfPage": "Main Page",
@@ -19,6 +18,13 @@
       "placeholderUsername": "type your username",
       "placeholderPassword": "type your password",
       "placeholderEmail": "type your email"
+    }
+  },
+  "foother": {
+    "names": {
+      "alexander": "Aleksandr",
+      "nikolai": "Nikolai",
+      "yaraslava": "Yaraslava"
     }
   }
 }

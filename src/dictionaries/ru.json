@@ -19,5 +19,12 @@
       "placeholderPassword": "введите пароль",
       "placeholderEmail": "введите email"
     }
+  },
+  "foother": {
+    "names": {
+      "alexander": "Александр",
+      "nikolai": "Николай",
+      "yaraslava": "Ярослава"
+    }
   }
 }

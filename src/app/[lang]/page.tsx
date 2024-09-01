@@ -1,5 +1,7 @@
 'use client';
 
+'use client';
+
 import { Locale } from '../../../i18n.config';
 import { auth } from '../../utils/firebaseConfig';
 import { useGetTextByLangQuery } from '../../store/reducers/apiLanguageSlice';

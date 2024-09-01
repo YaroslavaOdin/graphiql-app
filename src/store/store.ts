@@ -7,7 +7,6 @@ export const rootReducer = combineReducers({
   [apiLanguageSlice.reducerPath]: apiLanguageSlice.reducer,
 });
 
-
 export const makeStore = (preloadedState?: Partial<RootState>) => {
   return configureStore({
     reducer: rootReducer,

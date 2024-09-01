@@ -2,7 +2,8 @@
   "navigation": {
     "home": "Home",
     "register": "Sign Up",
-    "logIn": "Sign In"
+    "logIn": "Sign In",
+    "logOut": "Log Out"
   },
 
   "page": {

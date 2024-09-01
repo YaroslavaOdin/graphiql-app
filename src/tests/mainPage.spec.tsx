@@ -69,7 +69,7 @@ describe('Home component', () => {
     renderWithProviders(<MainPage params={params} />);
 
     await waitFor(() => {
-      expect(screen.getByText('ALEX')).toBeInTheDocument();
+      expect(screen.getByText(mockUser.displayName)).toBeInTheDocument();
     });
   });
 });

@@ -7,6 +7,7 @@ export interface Navigation {
   home: string;
   register: string;
   logIn: string;
+  logOut: string;
 }
 
 export interface Page {

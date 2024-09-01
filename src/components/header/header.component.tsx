@@ -46,16 +46,14 @@ function Header({ lang }: HeaderProps) {
           <LanguageSwitcher lang={lang} />
         </div>
 
-        {user ? (
-          <SignOut />
-        ) : (
-          data && (
-            <div className="flex gap-4">
-              <SignUp lang={lang} text={data?.navigation.register} />
-              <SignIn lang={lang} text={data?.navigation.logIn} />
-            </div>
-          )
-        )}
+        {user
+          ? data && <SignOut text={data?.navigation.logOut} />
+          : data && (
+              <div className="flex gap-4">
+                <SignUp lang={lang} text={data?.navigation.register} />
+                <SignIn lang={lang} text={data?.navigation.logIn} />
+              </div>
+            )}
       </nav>
     </header>
   );

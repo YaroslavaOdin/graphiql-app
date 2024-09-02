@@ -34,7 +34,7 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
 
   function HandleFocusOut() {
     history.replaceState(null, '',
-      `/en/graphiql-client/GRAPHQL/${nextBase64.encode(endpointState).split('=').join('')}/${nextBase64.encode(queryState).split('=').join('')}`, { shallow: true }
+      `/en/graphiql-client/GRAPHQL/${nextBase64.encode(endpointState).split('=').join('')}/${nextBase64.encode(queryState).split('=').join('')}`
     );
   }
 

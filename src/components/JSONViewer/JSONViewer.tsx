@@ -1,8 +1,13 @@
+/* eslint-disable react-compiler/react-compiler */
+
+
 import 'server-only';
 import Codemirror from '../codeMirror/codeMirror.component';
 import prettify from '../../utils/prettify';
 
 export default async function JSONViewer({ endpoint, query }: { endpoint: string; query: string }) {
+  let statusCode;
+
   function fetchGraphQL(value: string) {
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
@@ -18,7 +23,10 @@ export default async function JSONViewer({ endpoint, query }: { endpoint: string
       body: graphql,
       redirect: 'follow',
     })
-      .then(response => response.text())
+      .then(response => {
+        statusCode = response.status;
+        return response.text();
+      })
       .then(result => {
         return result;
       })
@@ -28,5 +36,12 @@ export default async function JSONViewer({ endpoint, query }: { endpoint: string
   const response: string = await fetchGraphQL(query);
   const prettifiedResponse = prettify(response);
 
-  return <Codemirror value={prettifiedResponse} />;
+  return (
+    <div>
+      <p>
+        <i>{`Status code: ${statusCode}\n`}</i>
+      </p>
+      <Codemirror value={prettifiedResponse} />
+    </div>
+  );
 }

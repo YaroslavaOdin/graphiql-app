@@ -1,5 +1,6 @@
 import 'server-only';
 import Codemirror from '../codeMirror/codeMirror.component';
+import prettify from '../../utils/prettify';
 
 export default async function JSONViewer({ endpoint, query }: { endpoint: string; query: string }) {
   function fetchGraphQL(value: string) {
@@ -25,6 +26,7 @@ export default async function JSONViewer({ endpoint, query }: { endpoint: string
   }
 
   const response: string = await fetchGraphQL(query);
+  const prettifiedResponse = prettify(response);
 
-  return <Codemirror value={response} />;
+  return <Codemirror value={prettifiedResponse} />;
 }

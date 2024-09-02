@@ -9,6 +9,7 @@ import { useParams, useRouter } from 'next/navigation';
 import nextBase64 from 'next-base64';
 import { useGetTextByLangQuery } from '../../store/reducers/apiLanguageSlice';
 import { Locale } from '../../../i18n.config';
+import prettify from '../../utils/prettify';
 
 export default function GraphiQLClient({ children }: { children: React.JSX.Element }): JSX.Element {
   const [endpointState, setEndpointState] = useState<string>('');
@@ -29,6 +30,10 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
     router.push(
       `/en/graphiql-client/GRAPHQL/${nextBase64.encode(endpointState).split('=').join('')}/${nextBase64.encode(queryState).split('=').join('')}`,
     );
+  }
+
+  function HandlePrettify() {
+    setQueryState(prev => prettify(prev));
   }
 
   return (
@@ -63,6 +68,7 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
         value={queryState}
       />
       <Button onClick={() => HandleSendRequest()}>{data?.page.graphiql.send}</Button>
+      <Button onClick={() => HandlePrettify()}>Prettify</Button>
       <div>
         <label>{data?.page.graphiql.response}</label>
         {children}

@@ -32,6 +32,12 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
     );
   }
 
+  function HandleFocusOut() {
+    history.replaceState(null, '',
+      `/en/graphiql-client/GRAPHQL/${nextBase64.encode(endpointState).split('=').join('')}/${nextBase64.encode(queryState).split('=').join('')}`, { shallow: true }
+    );
+  }
+
   function HandlePrettify() {
     setQueryState(prev => prettify(prev));
   }
@@ -66,6 +72,7 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
         }}
         onChange={value => setQueryState(value)}
         value={queryState}
+        onBlur={() => HandleFocusOut()}
       />
       <div className="flex gap-1 py-1">
         <Button onClick={() => HandleSendRequest()}>{data?.page.graphiql.send}</Button>

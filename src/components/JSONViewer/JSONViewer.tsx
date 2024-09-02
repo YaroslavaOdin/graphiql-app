@@ -1,7 +1,6 @@
 /* eslint-disable react-compiler/react-compiler */
 
-
-import 'server-only';
+//import 'server-only';
 import Codemirror from '../codeMirror/codeMirror.component';
 import prettify from '../../utils/prettify';
 

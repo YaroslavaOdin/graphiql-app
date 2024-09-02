@@ -37,7 +37,7 @@ function Header({ lang }: HeaderProps) {
   };
 
   return (
-    <header className={`bg-lime-600 sticky top-0 ${animation}`}>
+    <header className={`bg-lime-600 sticky top-0 ${animation} z-50`}>
       <nav className="flex justify-between gap-4 p-4 items-center">
         <div className="flex items-center gap-3">
           <Link href={`/${lang}`}>

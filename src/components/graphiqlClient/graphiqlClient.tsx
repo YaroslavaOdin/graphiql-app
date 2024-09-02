@@ -37,7 +37,7 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
   }
 
   return (
-    <div>
+    <div className='p-2'>
       <p>{data?.page.graphiql.title}</p>
       <label>
         {data?.page.graphiql.endpoint}
@@ -67,8 +67,10 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
         onChange={value => setQueryState(value)}
         value={queryState}
       />
-      <Button onClick={() => HandleSendRequest()}>{data?.page.graphiql.send}</Button>
-      <Button onClick={() => HandlePrettify()}>Prettify</Button>
+      <div className='flex gap-1 py-1'>
+        <Button onClick={() => HandleSendRequest()}>{data?.page.graphiql.send}</Button>
+        <Button onClick={() => HandlePrettify()}>Prettify</Button>
+      </div>
       <div>
         <label>{data?.page.graphiql.response}</label>
         {children}

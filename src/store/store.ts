@@ -7,13 +7,14 @@ export const rootReducer = combineReducers({
   [apiLanguageSlice.reducerPath]: apiLanguageSlice.reducer,
 });
 
-export const makeStore = () => {
+export const makeStore = (preloadedState?: Partial<RootState>) => {
   return configureStore({
     reducer: rootReducer,
     middleware: getDefaultMiddleware => getDefaultMiddleware().concat(apiLanguageSlice.middleware),
+    preloadedState,
   });
 };
 
+export type RootState = ReturnType<typeof rootReducer>;
 export type AppStore = ReturnType<typeof makeStore>;
-export type RootState = ReturnType<AppStore['getState']>;
 export type AppDispatch = AppStore['dispatch'];

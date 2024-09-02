@@ -1,4 +1,8 @@
-import { Locale } from "../../i18n.config";
+import { Locale } from '../../i18n.config';
+
+export interface FootherProps {
+  lang: Locale;
+}
 
 export interface DictionaryType {
   navigation: Navigation;
@@ -10,32 +14,40 @@ export interface Navigation {
   home: string;
   register: string;
   logIn: string;
+  logOut: string;
 }
 
 export interface Page {
   home: Home;
+  register: Register;
 }
 
 export interface Home {
-  title: string;
-  description: string;
+  nameOfPage: string;
+  greeting: string;
 }
 
-export interface IGithubLink {
-  name: string;
-  link: string;
+export interface Register {
+  username: string;
+  password: string;
+  email: string;
+  submit: string;
+  placeholderUsername: string;
+  placeholderPassword: string;
+  placeholderEmail: string;
 }
 
 export interface Foother {
   names: Names;
 }
 
-interface Names {
-  alexandr: string;
+export interface Names {
+  alexander: string;
   nikolai: string;
   yaraslava: string;
 }
 
-export interface FootherProps {
-  lang: Locale;
+export interface IGithubLink {
+  name: string;
+  link: string;
 }

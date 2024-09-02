@@ -2,26 +2,26 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { getDictionary } from '../../lib/dictionary';
 import { Locale } from '../../../i18n.config';
 import LanguageSwitcher from '../languageSwitcher/languageSwitcher.component';
 import Image from 'next/image';
 import Logo from '/public/pngwing.com.png';
 import SignUp from '../signUpButton/signUp.component';
 import SignIn from '../signInButton/signIn.component';
-import { DictionaryType } from '../../interfaces/interfaces';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '../../utils/firebaseConfig';
+import { useGetTextByLangQuery } from '../../store/reducers/apiLanguageSlice';
+import SignOut from '../signOutButton/signOut.component';
 
 interface HeaderProps {
   lang: Locale;
 }
 
 function Header({ lang }: HeaderProps) {
-  const [dictionary, setDictionary] = useState<DictionaryType | undefined>(undefined);
+  const { data } = useGetTextByLangQuery(lang);
   const [animation, setAnimation] = useState('');
 
-  useEffect(() => {
-    getDictionary(lang).then(res => setDictionary(res));
-  }, [lang]);
+  const [user] = useAuthState(auth);
 
   useEffect(() => {
     window.addEventListener('scroll', isScroll);
@@ -45,12 +45,15 @@ function Header({ lang }: HeaderProps) {
           </Link>
           <LanguageSwitcher lang={lang} />
         </div>
-        {dictionary && (
-          <div className="flex gap-4">
-            <SignUp lang={lang} text={dictionary.navigation.register} />
-            <SignIn lang={lang} text={dictionary.navigation.logIn} />
-          </div>
-        )}
+
+        {user
+          ? data && <SignOut text={data?.navigation.logOut} />
+          : data && (
+              <div className="flex gap-4">
+                <SignUp lang={lang} text={data?.navigation.register} />
+                <SignIn lang={lang} text={data?.navigation.logIn} />
+              </div>
+            )}
       </nav>
     </header>
   );

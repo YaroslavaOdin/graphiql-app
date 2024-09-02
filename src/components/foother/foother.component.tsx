@@ -12,7 +12,7 @@ export default function Foother({ lang }: FootherProps): JSX.Element {
 
   const githubLinks: IGithubLink[] = [
     {
-      name: data?.foother.names.alexandr || 'Aleksandr',
+      name: data?.foother.names.alexander || 'Aleksandr',
       link: 'https://github.com/Alex991995',
     },
     {

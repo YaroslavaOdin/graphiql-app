@@ -1,7 +1,8 @@
 import React from 'react';
 import { Button } from '../ui/button';
-import Link from 'next/link';
 import { Locale } from '../../../i18n.config';
+import { usePathname, useRouter } from 'next/navigation';
+import { redirectToRightRoute } from '../../utils/functionHelpers';
 
 interface SignInProps {
   lang: Locale;
@@ -9,9 +10,16 @@ interface SignInProps {
 }
 
 function SignIn({ lang, text }: SignInProps) {
+  const pathname = usePathname();
+
+  const arrayPathname = pathname.split('/');
+  const router = useRouter();
   return (
-    <Button variant="link" asChild>
-      <Link href={`${lang}/logIn`}>{text}</Link>
+    <Button
+      variant="link"
+      onClick={() => redirectToRightRoute(arrayPathname, `${lang}/logIn`, router)}
+    >
+      {text}
     </Button>
   );
 }

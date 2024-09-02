@@ -2,16 +2,13 @@
   "navigation": {
     "home": "Главная",
     "register": "Регистрация",
-    "logIn": "Войти"
+    "logIn": "Войти",
+    "logOut": "Выйти"
   },
   "page": {
     "home": {
-      "title": "Здарова дома",
-      "description": "какое-то описание"
-    },
-    "about": {
-      "title": "О нас",
-      "description": "Только о нас и говорят"
+      "nameOfPage": "Главная страница",
+      "greeting": "Добро пожаловать обратно"
     },
     "graphiql": {
       "title": "GraphiQL клиент",
@@ -24,6 +21,15 @@
       "query": "Запрос:",
       "send": "Отправить запрос",
       "response": "Ответ:"
+    },
+    "register": {
+      "username": "Имя пользователя",
+      "password": "Пароль",
+      "email": "Email",
+      "submit": "Отправить",
+      "placeholderUsername": "введите ваше имя",
+      "placeholderPassword": "введите пароль",
+      "placeholderEmail": "введите email"
     }
   },
   "foother": {

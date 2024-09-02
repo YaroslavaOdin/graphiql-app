@@ -1,25 +1,25 @@
-import { describe, expect, vi, it } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { describe, expect, vi, it, beforeEach } from 'vitest';
+import { screen } from '@testing-library/react';
 import SignIn from '../components/signInButton/signIn.component';
-
-vi.mock('next/navigation', () => ({
-  useRouter: () => ({
-    replace: vi.fn(),
-  }),
-  usePathname: () => ({
-    replace: vi.fn(),
-  }),
-}));
+import { renderWithProviders } from '../utils/test-redux';
 
 describe('SignIn Component', () => {
+  beforeEach(() => {
+    vi.mock('next/navigation', () => ({
+      useRouter: () => ({
+        replace: vi.fn(),
+      }),
+      usePathname: () => '/en/logIn',
+    }));
+  });
+
   it('should render SignIn Component with the correct link and text', () => {
     const lang = 'en';
     const text = 'Sign In';
 
-    render(<SignIn lang={lang} text={text} />);
-    expect(screen.getByText(text)).toBeInTheDocument();
+    renderWithProviders(<SignIn lang={lang} text={text} />);
 
-    const linkElement = screen.getByRole('link', { name: text });
-    expect(linkElement).toHaveAttribute('href', 'en/logIn');
+    const linkElement = screen.getByRole('button', { name: /sign in/i });
+    expect(linkElement).toBeInTheDocument();
   });
 });

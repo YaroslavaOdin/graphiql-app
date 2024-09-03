@@ -1,10 +1,10 @@
 import GraphiQLClient from '../../../components/graphiqlClient/graphiqlClient';
-import Codemirror from '../../../components/codeMirror/codeMirror.component';
+import JSONViewer from '../../../components/JSONViewer/JSONViewer';
 
 export default function GraphiQLPage(): JSX.Element {
   return (
     <GraphiQLClient>
-      <Codemirror value="" />
+      <JSONViewer value="" statusCode={undefined} />
     </GraphiQLClient>
   );
 }

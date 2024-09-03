@@ -1,6 +1,6 @@
 import nextBase64 from 'next-base64';
 import GraphiQLClient from '../../../../../../components/graphiqlClient/graphiqlClient';
-import JSONViewer from '../../../../../../components/JSONViewer/JSONViewer';
+import GraphiQLResponse from '../../../../../../components/GraphiQLResponse/GraphiQLResponse';
 
 export default function GraphiQLPage({
   params,
@@ -11,7 +11,7 @@ export default function GraphiQLPage({
   const query = nextBase64.decode(params.query);
   return (
     <GraphiQLClient>
-      <JSONViewer endpoint={endpoint} query={query}></JSONViewer>
+      <GraphiQLResponse endpoint={endpoint} query={query}></GraphiQLResponse>
     </GraphiQLClient>
   );
 }

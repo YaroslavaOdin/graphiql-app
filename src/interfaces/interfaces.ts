@@ -19,12 +19,31 @@ export interface Navigation {
 
 export interface Page {
   home: Home;
+  graphiql: Graphiql;
   register: Register;
 }
 
 export interface Home {
   nameOfPage: string;
   greeting: string;
+}
+
+export interface Graphiql {
+  title: string;
+  endpoint: string;
+  sdl: string;
+  headers: string;
+  key: string;
+  value: string;
+  add: string;
+  query: string;
+  send: string;
+  response: string;
+}
+
+export interface IGithubLink {
+  name: string;
+  link: string;
 }
 
 export interface Register {

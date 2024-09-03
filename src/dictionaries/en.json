@@ -10,6 +10,18 @@
       "nameOfPage": "Main Page",
       "greeting": "Welcome Back"
     },
+    "graphiql": {
+      "title": "GraphiQL Client",
+      "endpoint": "Endpoint:",
+      "sdl": "SDL Url:",
+      "headers": "Headers:",
+      "key": "Header key",
+      "value": "Header value",
+      "add": "Add header:",
+      "query": "Query:",
+      "send": "Send request",
+      "response": "Response:"
+    },
     "register": {
       "username": "Username",
       "password": "Password",

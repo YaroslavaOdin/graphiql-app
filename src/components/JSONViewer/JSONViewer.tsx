@@ -1,12 +1,12 @@
 'use client';
 import ReactCodeMirror from '@uiw/react-codemirror';
 
-interface CodemirrorProps {
+interface JSONViewerProps {
   value: string;
   statusCode: number | undefined;
 }
 
-function JSONViewer({ value, statusCode }: CodemirrorProps) {
+function JSONViewer({ value, statusCode }: JSONViewerProps) {
   return (
     <div>
       {statusCode && (

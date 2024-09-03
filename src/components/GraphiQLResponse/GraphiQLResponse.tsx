@@ -4,7 +4,13 @@
 import JSONViewer from '../JSONViewer/JSONViewer';
 import prettify from '../../utils/prettify';
 
-export default async function GraphiQLResponse({ endpoint, query }: { endpoint: string; query: string }) {
+export default async function GraphiQLResponse({
+  endpoint,
+  query,
+}: {
+  endpoint: string;
+  query: string;
+}) {
   let statusCode: number | undefined;
 
   function fetchGraphQL(value: string) {
@@ -35,7 +41,5 @@ export default async function GraphiQLResponse({ endpoint, query }: { endpoint: 
   const response: string = await fetchGraphQL(query);
   const prettifiedResponse = prettify(response);
 
-  return (
-      <JSONViewer value={prettifiedResponse} statusCode={statusCode} />
-  );
+  return <JSONViewer value={prettifiedResponse} statusCode={statusCode} />;
 }

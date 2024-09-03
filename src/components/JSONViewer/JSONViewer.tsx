@@ -9,17 +9,19 @@ interface CodemirrorProps {
 function JSONViewer({ value, statusCode }: CodemirrorProps) {
   return (
     <div>
-    {statusCode && <p>
-      <i>{`Status code: ${statusCode}\n`}</i>
-    </p>}
-    <ReactCodeMirror
-      basicSetup={{
-        lineNumbers: false,
-      }}
-      readOnly={true}
-      value={value}
-    />
-  </div>
+      {statusCode && (
+        <p>
+          <i>{`Status code: ${statusCode}`}</i>
+        </p>
+      )}
+      <ReactCodeMirror
+        basicSetup={{
+          lineNumbers: false,
+        }}
+        readOnly={true}
+        value={value}
+      />
+    </div>
   );
 }
 

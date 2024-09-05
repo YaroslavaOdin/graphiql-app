@@ -32,11 +32,6 @@ export default function MainPage({ lang }: MainPageProps): JSX.Element {
             <h1 className="flex justify-center font-semibold text-5xl mb-10 mt-5">
               {data?.page.home.greeting},<span role="displayName">{user?.displayName}</span>
             </h1>
-            <div className="flex justify-center">
-              <Button className="bg-pink-600 hover:bg-pink-400">
-                <Link href={`${lang}/`}>{data?.mainPage.btn.mainPageBtn}</Link>
-              </Button>
-            </div>
             <div className="flex justify-center mt-8">
               <Button className="bg-slate-800 hover:bg-slate-600 mr-6">
                 <Link href={`${lang}/restfull-client`}>{data?.mainPage.btn.restClient}</Link>

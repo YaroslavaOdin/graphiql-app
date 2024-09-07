@@ -14,3 +14,25 @@ export function redirectToRightRoute(
     router.replace(routeWithoutLang);
   } else router.replace(route);
 }
+
+export function findNestedValueIfExist(parseJson: object | { [key: string]: unknown }, variables: { [key: string]: unknown }): object | { [key: string]: unknown } {
+  let flag = true;
+
+  const parseJsonObj = parseJson as { [key: string]: unknown };
+
+  for (const key in parseJsonObj) {
+    if (flag) {
+      if (!Object.keys(variables).includes(key)) {
+        if (typeof parseJsonObj[key] === 'object' && parseJsonObj[key] !== null) {
+          findNestedValueIfExist(parseJsonObj[key] as { [key: string]: unknown }, variables);
+        } else if (typeof parseJsonObj[key] === 'undefined') {
+          return parseJson;
+        }
+      } else {
+        parseJsonObj[key] = variables[key];
+        flag = false;
+      }
+    }
+  }
+  return parseJsonObj;
+}

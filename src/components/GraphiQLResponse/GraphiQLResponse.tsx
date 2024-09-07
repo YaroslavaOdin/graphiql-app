@@ -17,15 +17,28 @@ export default async function GraphiQLResponse({
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
 
-    const graphql = JSON.stringify({
-      query: value,
-      variables: {},
-    });
+    // const variables = {
+    //   id: "4"
+    // };
+    
+    // const query = `
+    //   query Album($id: ID!) {
+    //     album(id: $id) {
+    //       id
+    //       title
+    //     }
+    //   }
+    // `;
+
+    // const graphql = JSON.stringify({
+    //   query: query,
+    //   variables
+    // });
 
     return fetch(endpoint, {
       method: 'POST',
       headers: myHeaders,
-      body: graphql,
+      body: value,
       redirect: 'follow',
     })
       .then(response => {

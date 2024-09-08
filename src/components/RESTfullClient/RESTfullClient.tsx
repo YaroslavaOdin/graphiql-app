@@ -8,8 +8,8 @@ import { useParams, useRouter } from 'next/navigation';
 import nextBase64 from 'next-base64';
 import { useGetTextByLangQuery } from '../../store/reducers/apiLanguageSlice';
 import { Locale } from '../../../i18n.config';
-import prettify from '../../utils/prettify';
 import MethodSwitcher from '../RESTfullMethodSwitcher/RESTfullMethodSwitcher.component';
+import { prettifyJSON } from '../../utils/prettifyJSON';
 
 export default function RESTfullClient({ children }: { children: React.JSX.Element }): JSX.Element {
   const router = useRouter();
@@ -41,7 +41,7 @@ export default function RESTfullClient({ children }: { children: React.JSX.Eleme
   };
 
   const HandlePrettify = (): void => {
-    setBodyState(prev => prettify(prev));
+    setBodyState(request => prettifyJSON(request));
   };
 
   const handleMethodChange = (value: string): void => {

@@ -33,19 +33,35 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
 
   console.log(valueCodeMirror)
 
+  console.log(variables)
+
   useEffect(() => {
-    console.log(Object.keys(variables).length !== 0 && valueCodeMirror)
+
     if (Object.keys(variables).length !== 0 && valueCodeMirror) {
+console.log('fdrfdv')
+      // const variables = {
+      //   id: "4"
+      // };
+      
+      const query = `
+        query Album($id: ID!) {
+          album(id: $id) {
+            id
+            title
+          }
+        }
+      `;
      
       const newBody = JSON.stringify({
-        valueCodeMirror,
+        query,
         variables
       })
+
       console.log(newBody)
-      setQueryState(newBody)
+      setQueryState(prettify(newBody))
       // setQueryState(prettify(JSON.stringify(newBody)));
     }
-  }, [valueCodeMirror, variables, newPath]);
+  }, [valueCodeMirror, variables, newPath, queryState]);
 
   
 
@@ -92,7 +108,7 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
         </AccordionItem>
       </Accordion>
 
-      {/* <VariablesEditor variables={variables} setVariables={setVariables} /> */}
+      <VariablesEditor variables={variables} setVariables={setVariables} />
       <label>{data?.page.graphiql.query}</label>
 
       <ReactCodeMirror

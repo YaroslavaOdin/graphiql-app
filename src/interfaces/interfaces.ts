@@ -21,7 +21,9 @@ export interface Navigation {
 
 export interface Page {
   home: Home;
+  graphiql: Graphiql;
   register: Register;
+  restClient: IRestClient;
 }
 
 export interface Home {
@@ -29,6 +31,24 @@ export interface Home {
   greeting: string;
   welcome: string;
   team: string;
+}
+
+export interface Graphiql {
+  title: string;
+  endpoint: string;
+  sdl: string;
+  headers: string;
+  key: string;
+  value: string;
+  add: string;
+  query: string;
+  send: string;
+  response: string;
+}
+
+export interface IGithubLink {
+  name: string;
+  link: string;
 }
 
 export interface Register {
@@ -95,4 +115,20 @@ interface IMainPageAbout {
   rss: string;
   projectText: string;
   rssText: string;
+}
+
+interface IRestClient {
+  title: string,
+  endpoint: string,
+  methods: string,
+  requestBody: string,
+  sendBtn: string,
+  prettifyBtn: string,
+  response: string
+}
+
+export interface requestBody {
+  method: string,
+  headers: Headers,
+  body: string | undefined,
 }

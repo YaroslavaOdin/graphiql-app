@@ -12,6 +12,18 @@
       "welcome": "Welcome",
       "team": "Our team:"
     },
+    "graphiql": {
+      "title": "GraphiQL Client",
+      "endpoint": "Endpoint:",
+      "sdl": "SDL Url:",
+      "headers": "Headers:",
+      "key": "Header key",
+      "value": "Header value",
+      "add": "Add header:",
+      "query": "Query:",
+      "send": "Send request",
+      "response": "Response:"
+    },
     "register": {
       "username": "Username",
       "password": "Password",
@@ -20,6 +32,15 @@
       "placeholderUsername": "type your username",
       "placeholderPassword": "type your password",
       "placeholderEmail": "type your email"
+    },
+    "restClient": {
+      "title": "RESTFull Client",
+      "endpoint": "Endpoint:",
+      "methods": "Method:",
+      "requestBody": "Request body:",
+      "sendBtn": "Send",
+      "prettifyBtn": "Prettify",
+      "response": "Response:"
     }
   },
   "foother": {

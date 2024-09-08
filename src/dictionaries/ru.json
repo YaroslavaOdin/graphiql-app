@@ -12,6 +12,18 @@
       "welcome": "Добро пожаловать",
       "team": "Наша команда:"
     },
+    "graphiql": {
+      "title": "GraphiQL клиент",
+      "endpoint": "Эндпоинт:",
+      "sdl": "Ссылка SDL:",
+      "headers": "Заголовки:",
+      "key": "Ключ заголовка",
+      "value": "Значение заголовка",
+      "add": "Добавить заголовок",
+      "query": "Запрос:",
+      "send": "Отправить запрос",
+      "response": "Ответ:"
+    },
     "register": {
       "username": "Имя пользователя",
       "password": "Пароль",
@@ -20,6 +32,15 @@
       "placeholderUsername": "введите ваше имя",
       "placeholderPassword": "введите пароль",
       "placeholderEmail": "введите email"
+    },
+    "restClient": {
+      "title": "RESTFull клиент",
+      "endpoint": "Конечная точка (маршрут):",
+      "methods": "Метод:",
+      "requestBody": "Тело запроса:",
+      "sendBtn": "Отправить",
+      "prettifyBtn": "Отредактировать",
+      "response": "Ответ:"
     }
   },
   "foother": {

@@ -72,3 +72,11 @@
     @apply bg-background text-foreground;
   }
 }
+body[data-scroll-locked] {
+  min-width: 100%;
+}
+
+.animatedHeader {
+  background-color: rgb(11, 194, 72);
+  transition: background-color 0.6s;
+}

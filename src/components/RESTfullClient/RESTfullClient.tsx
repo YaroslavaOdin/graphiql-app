@@ -10,9 +10,11 @@ import { useGetTextByLangQuery } from '../../store/reducers/apiLanguageSlice';
 import { Locale } from '../../../i18n.config';
 import prettify from '../../utils/prettify';
 import MethodSwitcher from '../RESTfullMethodSwitcher/RESTfullMethodSwitcher.component';
-import VariablesEditor from '../variablesEditor/variablesEditor.component';
+import RESTfullvariablesEditor from '../RESTfullvariablesEditor/RESTfullvariablesEditor.component';
 import { jsonrepair } from 'jsonrepair';
 import { findNestedValueIfExist } from '../../utils/functionHelpers';
+
+// import { prettifyJSON } from '../../utils/prettifyJSON';
 
 export default function RESTfullClient({ children }: { children: React.JSX.Element }): JSX.Element {
   const router = useRouter();
@@ -52,7 +54,7 @@ export default function RESTfullClient({ children }: { children: React.JSX.Eleme
   };
 
   const HandlePrettify = (): void => {
-    setBodyState(prev => prettify(prev));
+    setValueCodeMirror(prev => prettify(prev));
   };
 
   const handleMethodChange = (value: string): void => {
@@ -64,10 +66,15 @@ export default function RESTfullClient({ children }: { children: React.JSX.Eleme
       const repairJson = jsonrepair(valueCodeMirror);
       const parseJson = JSON.parse(repairJson);
 
-      const newBody: object = findNestedValueIfExist(parseJson, variables)
-      setBodyState(prettify(JSON.stringify(newBody)));
+      const newBody: object = findNestedValueIfExist(parseJson, variables);
+
+      setBodyState(JSON.stringify(newBody));
     }
   }, [valueCodeMirror, variables, newPath]);
+
+  useEffect(() => {
+    setValueCodeMirror(prettify(bodyState));
+  }, [bodyState]);
 
   return (
     <div className="p-5">
@@ -81,14 +88,14 @@ export default function RESTfullClient({ children }: { children: React.JSX.Eleme
       <div>{data?.page.restClient.methods}</div>
       <MethodSwitcher onChange={handleMethodChange}></MethodSwitcher>
 
-      <VariablesEditor variables={variables} setVariables={setVariables} />
+      <RESTfullvariablesEditor variables={variables} setVariables={setVariables} />
       <label>{data?.page.restClient.requestBody}</label>
       <ReactCodeMirror
         basicSetup={{
           lineNumbers: false,
         }}
         onChange={value => setValueCodeMirror(value)}
-        value={bodyState}
+        value={valueCodeMirror}
         onBlur={() => HandleFocusOut()}
       />
       <div className="flex gap-1 py-1">

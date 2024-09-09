@@ -9,6 +9,7 @@ export default function GraphiQLPage({
 }): JSX.Element {
   const endpoint = nextBase64.decode(params.endpoint);
   const query = nextBase64.decode(params.query);
+
   return (
     <GraphiQLClient>
       <GraphiQLResponse endpoint={endpoint} query={query}></GraphiQLResponse>

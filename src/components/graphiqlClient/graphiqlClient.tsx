@@ -10,8 +10,7 @@ import nextBase64 from 'next-base64';
 import { useGetTextByLangQuery } from '../../store/reducers/apiLanguageSlice';
 import { Locale } from '../../../i18n.config';
 import prettify from '../../utils/prettify';
-import { jsonrepair } from 'jsonrepair';
-import VariablesEditor from '../variablesEditor/variablesEditor.component';
+import GraphqlVariablesEditor from '../graphqlVariablesEditor/graphqlVariablesEditor.component';
 
 export default function GraphiQLClient({ children }: { children: React.JSX.Element }): JSX.Element {
   const [endpointState, setEndpointState] = useState<string>('');
@@ -21,7 +20,7 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
 
   const { data } = useGetTextByLangQuery(lang);
 
-  const [variables, setVariables] = useState<object>({});
+  const [variables, setVariables] = useState('');
   const [valueCodeMirror, setValueCodeMirror] = useState('');
 
   const newPath = useMemo(() => {
@@ -31,39 +30,19 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
     return `/${lang}/graphiql-client/GRAPHQL/${encodedEndpoint}/${encodedQuery}`;
   }, [endpointState, lang, queryState]);
 
-  console.log(valueCodeMirror)
-
-  console.log(variables)
-
   useEffect(() => {
-
     if (Object.keys(variables).length !== 0 && valueCodeMirror) {
-console.log('fdrfdv')
-      // const variables = {
-      //   id: "4"
-      // };
-      
-      const query = `
-        query Album($id: ID!) {
-          album(id: $id) {
-            id
-            title
-          }
-        }
-      `;
-     
       const newBody = JSON.stringify({
-        query,
-        variables
-      })
+        query: valueCodeMirror,
+        variables,
+      });
 
-      console.log(newBody)
-      setQueryState(prettify(newBody))
-      // setQueryState(prettify(JSON.stringify(newBody)));
+      setQueryState(newBody);
+    } else {
+      const res = JSON.stringify({ query: valueCodeMirror });
+      setQueryState(res);
     }
   }, [valueCodeMirror, variables, newPath, queryState]);
-
-  
 
   useEffect(() => {
     if (endpoint && query) {
@@ -81,7 +60,7 @@ console.log('fdrfdv')
   }
 
   function HandlePrettify() {
-    setQueryState(prev => prettify(prev));
+    setValueCodeMirror(prev => prettify(prev));
   }
 
   return (
@@ -107,8 +86,11 @@ console.log('fdrfdv')
           </label>
         </AccordionItem>
       </Accordion>
-
-      <VariablesEditor variables={variables} setVariables={setVariables} />
+      <GraphqlVariablesEditor
+        variables={variables}
+        setVariables={setVariables}
+        HandleFocusOut={HandleFocusOut}
+      />
       <label>{data?.page.graphiql.query}</label>
 
       <ReactCodeMirror
@@ -116,7 +98,7 @@ console.log('fdrfdv')
           lineNumbers: false,
         }}
         onChange={value => setValueCodeMirror(value)}
-        value={queryState}
+        value={valueCodeMirror}
         onBlur={() => HandleFocusOut()}
       />
       <div className="flex gap-1 py-1">

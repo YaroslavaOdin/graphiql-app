@@ -11,6 +11,7 @@ import { useGetTextByLangQuery } from '../../store/reducers/apiLanguageSlice';
 import { Locale } from '../../../i18n.config';
 import prettify from '../../utils/prettify';
 import GraphqlVariablesEditor from '../graphqlVariablesEditor/graphqlVariablesEditor.component';
+import useActions from '../../hooks/useAction';
 
 export default function GraphiQLClient({ children }: { children: React.JSX.Element }): JSX.Element {
   const [endpointState, setEndpointState] = useState<string>('');
@@ -22,7 +23,7 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
 
   const [variables, setVariables] = useState('');
   const [valueCodeMirror, setValueCodeMirror] = useState('');
-
+  const { storeRequest } = useActions()
   const newPath = useMemo(() => {
     const encodedEndpoint = nextBase64.encode(endpointState).replace(/=/g, '');
     const encodedQuery = nextBase64.encode(queryState).replace(/=/g, '');
@@ -52,6 +53,7 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
   }, [endpoint, query]);
 
   function HandleSendRequest() {
+    storeRequest(newPath)
     router.push(newPath);
   }
 

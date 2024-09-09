@@ -1,21 +1,32 @@
 import { createSlice } from '@reduxjs/toolkit';
-// import type { PayloadAction } from '@reduxjs/toolkit'
+import type { PayloadAction } from '@reduxjs/toolkit';
 
 interface historyTypes {
-  history: undefined;
+  request: string[];
 }
 
+const localStorageRequest = localStorage.getItem('requests');
+
 const initialState: historyTypes = {
-  history: undefined,
+  request: (localStorageRequest && JSON.parse(localStorageRequest)) || [],
 };
 
 export const historySlice = createSlice({
   name: 'history',
   initialState,
-  reducers: {},
+  selectors: {
+    selectRequest: state => state.request,
+  },
+
+  reducers: {
+    storeRequest: (state, { payload }: PayloadAction<string>) => {
+      state.request?.push(payload);
+      localStorage.setItem('requests', JSON.stringify(state.request));
+    },
+  },
 });
 
-// export const {  } = historySlice.actions;
+export const { storeRequest } = historySlice.actions;
 
-// export const {  } = historySlice.selectors;
+export const { selectRequest } = historySlice.selectors;
 export default historySlice.reducer;

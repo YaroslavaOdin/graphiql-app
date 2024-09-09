@@ -13,20 +13,25 @@ import MethodSwitcher from '../RESTfullMethodSwitcher/RESTfullMethodSwitcher.com
 import RESTfullvariablesEditor from '../RESTfullvariablesEditor/RESTfullvariablesEditor.component';
 import { jsonrepair } from 'jsonrepair';
 import { findNestedValueIfExist } from '../../utils/functionHelpers';
+import useActions from '../../hooks/useAction';
 
 
 export default function RESTfullClient({ children }: { children: React.JSX.Element }): JSX.Element {
   const router = useRouter();
-  const [endpointState, setEndpointState] = useState<string>('');
-  const [bodyState, setBodyState] = useState<string>('');
-  const [methodState, setMethodState] = useState<string>('GET');
   const {
     lang,
     method,
     endpoint,
     body,
-  }: { lang: Locale; method: string; endpoint: string; body: string } = useParams();
+  }: { lang: Locale; method?: string; endpoint?: string; body?: string } = useParams();
+
+  const [endpointState, setEndpointState] = useState<string>(nextBase64.decode(endpoint || ''));
+  const [bodyState, setBodyState] = useState<string>(nextBase64.decode(body || ''));
+  const [methodState, setMethodState] = useState<string>(nextBase64.decode(method || ''));
+
+ 
   const { data } = useGetTextByLangQuery(lang);
+  const { storeRequest } = useActions()
 
   const [variables, setVariables] = useState<{ [key: string]: unknown }>({});
   const [valueCodeMirror, setValueCodeMirror] = useState('');
@@ -45,6 +50,7 @@ export default function RESTfullClient({ children }: { children: React.JSX.Eleme
   }, [method, endpoint, body]);
 
   const HandleSendRequest = (): void => {
+    storeRequest(newPath)
     router.push(newPath);
   };
 

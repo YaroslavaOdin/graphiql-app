@@ -34,7 +34,7 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
     if (Object.keys(variables).length !== 0 && valueCodeMirror) {
       const newBody = JSON.stringify({
         query: valueCodeMirror,
-        variables,
+        variables: variables,
       });
 
       setQueryState(newBody);

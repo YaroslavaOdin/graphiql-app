@@ -7,20 +7,27 @@ import prettify from '../../utils/prettify';
 export default async function GraphiQLResponse({
   endpoint,
   query,
+  variables,
 }: {
   endpoint: string;
   query: string;
+  variables: string | undefined;
 }) {
   let statusCode: number | undefined;
 
   function fetchGraphQL(value: string) {
+    const graphQLBody = JSON.stringify({
+      query: value,
+      variables: variables ? JSON.parse(variables) : {},
+    });
+
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
 
     return fetch(endpoint, {
       method: 'POST',
       headers: myHeaders,
-      body: value,
+      body: graphQLBody,
       redirect: 'follow',
     })
       .then(response => {

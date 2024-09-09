@@ -14,7 +14,6 @@ import RESTfullvariablesEditor from '../RESTfullvariablesEditor/RESTfullvariable
 import { jsonrepair } from 'jsonrepair';
 import { findNestedValueIfExist } from '../../utils/functionHelpers';
 
-// import { prettifyJSON } from '../../utils/prettifyJSON';
 
 export default function RESTfullClient({ children }: { children: React.JSX.Element }): JSX.Element {
   const router = useRouter();

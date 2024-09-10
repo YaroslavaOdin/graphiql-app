@@ -13,7 +13,7 @@ export default function RESTfullPage({
 
   return (
     <RESTfullClient>
-      <RESTfullResponse method={method} endpoint={endpoint} body={body}></RESTfullResponse>
+      <RESTfullResponse method={method} endpoint={endpoint} bodyValue={body}></RESTfullResponse>
     </RESTfullClient>
   );
 }

@@ -118,17 +118,17 @@ interface IMainPageAbout {
 }
 
 interface IRestClient {
-  title: string,
-  endpoint: string,
-  methods: string,
-  requestBody: string,
-  sendBtn: string,
-  prettifyBtn: string,
-  response: string
+  title: string;
+  endpoint: string;
+  methods: string;
+  requestBody: string;
+  sendBtn: string;
+  prettifyBtn: string;
+  response: string;
 }
 
 export interface requestBody {
-  method: string,
-  headers: Headers,
-  body: string | undefined,
+  method: string;
+  headers: Headers;
+  body: string | undefined;
 }

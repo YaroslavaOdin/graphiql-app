@@ -1,3 +1,3 @@
 export const prettifyJSON = (value: string): string => {
-    return JSON.stringify(JSON.parse(value), null, 2);
+    return value ? JSON.stringify(JSON.parse(value), null, 2) : value;
 }

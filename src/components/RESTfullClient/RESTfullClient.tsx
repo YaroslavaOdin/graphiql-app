@@ -71,7 +71,7 @@ export default function RESTfullClient({ children }: { children: React.JSX.Eleme
   }, [valueCodeMirror, variables, newPath]);
 
   useEffect(() => {
-    setValueCodeMirror(prettify(bodyState));
+    setValueCodeMirror(prettifyJSON(bodyState));
   }, [bodyState]);
 
   return (

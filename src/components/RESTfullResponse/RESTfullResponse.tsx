@@ -7,11 +7,11 @@ import JSONViewer from '../JSONViewer/JSONViewer';
 export default async function RESTfullResponse({
   method,
   endpoint,
-  body,
+  bodyValue,
 }: {
   method: string;
   endpoint: string;
-  body?: string;
+  bodyValue?: string;
 }) {
   let statusCode: number | undefined;
   const fetchRESTfull = (bodyValue?: string) => {
@@ -35,7 +35,7 @@ export default async function RESTfullResponse({
       .catch(error => error);
   };
 
-  const response: string = prettifyJSON(await fetchRESTfull(body));
+  const response: string = prettifyJSON(await fetchRESTfull(bodyValue));
 
   return <JSONViewer value={response} statusCode={statusCode} />;
 }

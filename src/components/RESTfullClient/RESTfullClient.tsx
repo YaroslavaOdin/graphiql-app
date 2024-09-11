@@ -3,13 +3,16 @@
 import ReactCodeMirror from '@uiw/react-codemirror';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import nextBase64 from 'next-base64';
 import { useGetTextByLangQuery } from '../../store/reducers/apiLanguageSlice';
 import { Locale } from '../../../i18n.config';
 import MethodSwitcher from '../RESTfullMethodSwitcher/RESTfullMethodSwitcher.component';
 import { prettifyJSON } from '../../utils/prettifyJSON';
+import RESTfullvariablesEditor from '../RESTfullvariablesEditor/RESTfullvariablesEditor.component';
+import { jsonrepair } from 'jsonrepair';
+import { findNestedValueIfExist } from '../../utils/functionHelpers';
 
 export default function RESTfullClient({ children }: { children: React.JSX.Element }): JSX.Element {
   const router = useRouter();
@@ -23,7 +26,15 @@ export default function RESTfullClient({ children }: { children: React.JSX.Eleme
     body,
   }: { lang: Locale; method: string; endpoint: string; body: string } = useParams();
   const { data } = useGetTextByLangQuery(lang);
-  const newPath = `/en/restfull-client/${methodState}/${nextBase64.encode(endpointState).split('=').join('')}/${nextBase64.encode(bodyState).split('=').join('')}`;
+
+  const [variables, setVariables] = useState<{ [key: string]: unknown }>({});
+  const [valueCodeMirror, setValueCodeMirror] = useState('');
+
+  const newPath = useMemo(() => {
+    const encodedEndpoint = nextBase64.encode(endpointState).replace(/=/g, '');
+    const encodedBody = nextBase64.encode(bodyState).replace(/=/g, '');
+    return `/${lang}/restfull-client/${methodState}/${encodedEndpoint}/${encodedBody}`;
+  }, [methodState, endpointState, bodyState, lang]);
 
   useEffect(() => {
     if (endpoint && body) {
@@ -41,12 +52,27 @@ export default function RESTfullClient({ children }: { children: React.JSX.Eleme
   };
 
   const HandlePrettify = (): void => {
-    setBodyState(request => prettifyJSON(request));
+    setValueCodeMirror(request => prettifyJSON(request));
   };
 
   const handleMethodChange = (value: string): void => {
     setMethodState(value);
   };
+
+  useEffect(() => {
+    if (Object.keys(variables).length !== 0 && valueCodeMirror) {
+      const repairJson = jsonrepair(valueCodeMirror);
+      const parseJson = JSON.parse(repairJson);
+
+      const newBody: object = findNestedValueIfExist(parseJson, variables);
+
+      setBodyState(JSON.stringify(newBody));
+    }
+  }, [valueCodeMirror, variables, newPath]);
+
+  useEffect(() => {
+    setValueCodeMirror(prettify(bodyState));
+  }, [bodyState]);
 
   return (
     <div className="p-5">
@@ -59,13 +85,15 @@ export default function RESTfullClient({ children }: { children: React.JSX.Eleme
       </label>
       <div>{data?.page.restClient.methods}</div>
       <MethodSwitcher onChange={handleMethodChange}></MethodSwitcher>
+
+      <RESTfullvariablesEditor variables={variables} setVariables={setVariables} />
       <label>{data?.page.restClient.requestBody}</label>
       <ReactCodeMirror
         basicSetup={{
           lineNumbers: false,
         }}
-        onChange={value => setBodyState(value)}
-        value={bodyState}
+        onChange={value => setValueCodeMirror(value)}
+        value={valueCodeMirror}
         onBlur={() => HandleFocusOut()}
       />
       <div className="flex gap-1 py-1">

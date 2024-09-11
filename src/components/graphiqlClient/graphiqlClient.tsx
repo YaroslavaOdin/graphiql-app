@@ -3,13 +3,14 @@
 import ReactCodeMirror from '@uiw/react-codemirror';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
 import { useParams, useRouter } from 'next/navigation';
 import nextBase64 from 'next-base64';
 import { useGetTextByLangQuery } from '../../store/reducers/apiLanguageSlice';
 import { Locale } from '../../../i18n.config';
 import prettify from '../../utils/prettify';
+import GraphqlVariablesEditor from '../graphqlVariablesEditor/graphqlVariablesEditor.component';
 
 export default function GraphiQLClient({ children }: { children: React.JSX.Element }): JSX.Element {
   const [endpointState, setEndpointState] = useState<string>('');
@@ -19,6 +20,30 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
 
   const { data } = useGetTextByLangQuery(lang);
 
+  const [variables, setVariables] = useState('');
+  const [valueCodeMirror, setValueCodeMirror] = useState('');
+
+  const newPath = useMemo(() => {
+    const encodedEndpoint = nextBase64.encode(endpointState).replace(/=/g, '');
+    const encodedQuery = nextBase64.encode(queryState).replace(/=/g, '');
+
+    return `/${lang}/graphiql-client/GRAPHQL/${encodedEndpoint}/${encodedQuery}`;
+  }, [endpointState, lang, queryState]);
+
+  useEffect(() => {
+    if (Object.keys(variables).length !== 0 && valueCodeMirror) {
+      const newBody = JSON.stringify({
+        query: valueCodeMirror,
+        variables: variables,
+      });
+
+      setQueryState(newBody);
+    } else {
+      const res = JSON.stringify({ query: valueCodeMirror });
+      setQueryState(res);
+    }
+  }, [valueCodeMirror, variables, newPath, queryState]);
+
   useEffect(() => {
     if (endpoint && query) {
       setEndpointState(nextBase64.decode(endpoint));
@@ -27,21 +52,15 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
   }, [endpoint, query]);
 
   function HandleSendRequest() {
-    router.push(
-      `/en/graphiql-client/GRAPHQL/${nextBase64.encode(endpointState).split('=').join('')}/${nextBase64.encode(queryState).split('=').join('')}`,
-    );
+    router.push(newPath);
   }
 
   function HandleFocusOut() {
-    history.replaceState(
-      null,
-      '',
-      `/en/graphiql-client/GRAPHQL/${nextBase64.encode(endpointState).split('=').join('')}/${nextBase64.encode(queryState).split('=').join('')}`,
-    );
+    history.replaceState(null, '', newPath);
   }
 
   function HandlePrettify() {
-    setQueryState(prev => prettify(prev));
+    setValueCodeMirror(prev => prettify(prev));
   }
 
   return (
@@ -67,13 +86,19 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
           </label>
         </AccordionItem>
       </Accordion>
+      <GraphqlVariablesEditor
+        variables={variables}
+        setVariables={setVariables}
+        HandleFocusOut={HandleFocusOut}
+      />
       <label>{data?.page.graphiql.query}</label>
+
       <ReactCodeMirror
         basicSetup={{
           lineNumbers: false,
         }}
-        onChange={value => setQueryState(value)}
-        value={queryState}
+        onChange={value => setValueCodeMirror(value)}
+        value={valueCodeMirror}
         onBlur={() => HandleFocusOut()}
       />
       <div className="flex gap-1 py-1">

@@ -11,6 +11,7 @@ import { useGetTextByLangQuery } from '../../store/reducers/apiLanguageSlice';
 import { Locale } from '../../../i18n.config';
 import prettify from '../../utils/prettify';
 import GraphqlVariablesEditor from '../graphqlVariablesEditor/graphqlVariablesEditor.component';
+import { decodedQueryType } from '../../interfaces/interfaces';
 
 export default function GraphiQLClient({ children }: { children: React.JSX.Element }): JSX.Element {
   const [endpointState, setEndpointState] = useState<string>('');
@@ -47,7 +48,9 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
   useEffect(() => {
     if (endpoint && query) {
       setEndpointState(nextBase64.decode(endpoint));
+      const decodedQuery:decodedQueryType = JSON.parse(nextBase64.decode(query));
       setQueryState(nextBase64.decode(query));
+      setValueCodeMirror(decodedQuery.query);
     }
   }, [endpoint, query]);
 

@@ -1,11 +1,7 @@
 import nextBase64 from 'next-base64';
 import GraphiQLClient from '../../../../../../components/graphiqlClient/graphiqlClient';
 import GraphiQLResponse from '../../../../../../components/GraphiQLResponse/GraphiQLResponse';
-
-interface decodedQueryType {
-  query:string,
-  variables: string | undefined
-}
+import { decodedQueryType } from '../../../../../../interfaces/interfaces';
 
 export default function GraphiQLPage({
   params,

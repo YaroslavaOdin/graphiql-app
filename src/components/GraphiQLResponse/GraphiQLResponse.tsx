@@ -8,10 +8,12 @@ export default async function GraphiQLResponse({
   endpoint,
   query,
   variables,
+  searchParams,
 }: {
   endpoint: string;
   query: string;
   variables: string | undefined;
+  searchParams: { [key: string]: string };
 }) {
   let statusCode: number | undefined;
 
@@ -23,6 +25,9 @@ export default async function GraphiQLResponse({
 
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
+    for (const param in searchParams) {
+      myHeaders.append(param, searchParams[param]);
+    }
 
     return fetch(endpoint, {
       method: 'POST',

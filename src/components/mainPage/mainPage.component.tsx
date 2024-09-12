@@ -12,7 +12,6 @@ import { onAuthStateChanged, User } from 'firebase/auth';
 import { delay } from '../../utils/functionHelpers';
 import { auth } from '../../utils/firebaseConfig';
 
-
 export default function MainPage({ lang }: MainPageProps): JSX.Element {
   const [user, setUser] = useState<User | null>(null);
   const { data } = useGetTextByLangQuery(lang);

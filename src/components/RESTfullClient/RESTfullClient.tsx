@@ -8,13 +8,11 @@ import { useParams, useRouter } from 'next/navigation';
 import nextBase64 from 'next-base64';
 import { useGetTextByLangQuery } from '../../store/reducers/apiLanguageSlice';
 import { Locale } from '../../../i18n.config';
-
 import MethodSwitcher from '../RESTfullMethodSwitcher/RESTfullMethodSwitcher.component';
+import { prettifyJSON } from '../../utils/prettifyJSON';
 import RESTfullvariablesEditor from '../RESTfullvariablesEditor/RESTfullvariablesEditor.component';
 import useActions from '../../hooks/useAction';
 import ComponentForCheckAuth from '../componentForCheckAuth/componentForCheckAuth.component';
-
-import { prettifyJSON } from '../../utils/prettifyJSON';
 
 export default function RESTfullClient({ children }: { children: React.JSX.Element }): JSX.Element {
   const router = useRouter();
@@ -56,7 +54,8 @@ export default function RESTfullClient({ children }: { children: React.JSX.Eleme
   };
 
   const HandlePrettify = (): void => {
-    setValueCodeMirror(prev => prettifyJSON(prev));
+    setValueCodeMirror(request => prettifyJSON(request));
+
   };
 
   const handleMethodChange = (value: string): void => {

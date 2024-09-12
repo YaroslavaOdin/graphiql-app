@@ -1,4 +1,3 @@
-
 import { StaticImageData } from 'next/image';
 import { Locale } from '../../i18n.config';
 

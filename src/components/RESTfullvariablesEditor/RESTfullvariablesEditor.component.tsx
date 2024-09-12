@@ -12,9 +12,10 @@ interface RESTfullvariablesEditorProps {
     }>
   >;
   variables: object;
+  text?: string
 }
 
-export default function RESTfullvariablesEditor({ setVariables, variables }: RESTfullvariablesEditorProps) {
+export default function RESTfullvariablesEditor({ setVariables, variables,text }: RESTfullvariablesEditorProps) {
   const [key, setKey] = useState('');
   const [value, setValue] = useState('');
 
@@ -28,7 +29,7 @@ export default function RESTfullvariablesEditor({ setVariables, variables }: RES
     <Accordion type="single" collapsible>
       <AccordionItem value="variables">
         <label>
-          <AccordionTrigger>Variables</AccordionTrigger>
+          <AccordionTrigger>{text}</AccordionTrigger>
           {Object.keys(variables).length !== 0 &&
             Object.keys(variables).map((item, i) => <div key={i}>{item}</div>)}
           <AccordionContent className="flex">

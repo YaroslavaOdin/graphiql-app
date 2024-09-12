@@ -12,6 +12,7 @@ import { Locale } from '../../../i18n.config';
 import prettify from '../../utils/prettify';
 import GraphqlVariablesEditor from '../graphqlVariablesEditor/graphqlVariablesEditor.component';
 import useActions from '../../hooks/useAction';
+import ComponentForCheckAuth from '../componentForCheckAuth/componentForCheckAuth.component';
 
 export default function GraphiQLClient({ children }: { children: React.JSX.Element }): JSX.Element {
   const [endpointState, setEndpointState] = useState<string>('');
@@ -52,6 +53,8 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
     }
   }, [endpoint, query]);
 
+
+
   function HandleSendRequest() {
     storeRequest(newPath)
     router.push(newPath);
@@ -89,6 +92,7 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
         </AccordionItem>
       </Accordion>
       <GraphqlVariablesEditor
+        text={data?.page.restClient.variables}
         variables={variables}
         setVariables={setVariables}
         HandleFocusOut={HandleFocusOut}
@@ -111,6 +115,7 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
         <label>{data?.page.graphiql.response}</label>
         {children}
       </div>
+      <ComponentForCheckAuth/>
     </div>
   );
 }

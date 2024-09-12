@@ -1,44 +1,24 @@
-'use client';
+import dynamic from 'next/dynamic';
+import ComponentForCheckAuth from '../../../components/componentForCheckAuth/componentForCheckAuth.component';
+import { Locale } from '../../../../i18n.config';
+import { getDictionary } from '../../../lib/dictionary';
+const Requests = dynamic(() => import('../../../components/requests/requests.component'), {
+  ssr: false,
+});
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '../../../utils/firebaseConfig';
-import { useAppSelector } from '../../../hooks/redux-hook';
-import { selectRequest } from '../../../store/reducers/historySlice';
-import nextBase64 from 'next-base64';
+export interface HistoryPageProps {
+  params: { lang: Locale };
+}
 
-export default function HistoryPage(): JSX.Element {
-  const router = useRouter();
-  const [user, loading] = useAuthState(auth);
-  const allRequests = useAppSelector(selectRequest);
+export default async function HistoryPage({params}:HistoryPageProps) {
+ const data = await  getDictionary(params.lang)
 
-  function showRequest(req: string) {
-    const arrReq = req.split('/');
-    const [, , , method, url] = arrReq;
-    return `${method}  ${nextBase64.decode(url)}`;
-  }
-
-  function redirectToRespectiveRoute(req: string) {
-    const arrReq = req.split('/');
-    const [, lang, route, method, url, body] = arrReq;
-    router.push(`/${lang}/${route}/${method}/${url}/${body}`);
-  }
-
-  useEffect(() => {
-    if (!user && !loading) {
-      router.push('/');
-    }
-  }, [user, router, loading]);
 
   return (
-    <div>
-      {user?.displayName}
-      {allRequests.map((item, i) => (
-        <div key={i} onClick={() => redirectToRespectiveRoute(item)}>
-          {showRequest(item)}
-        </div>
-      ))}
-    </div>
+    <section className="container flex flex-col items-center justify-center">
+      <h2>{data.page.history.title} </h2>
+      <Requests />
+      <ComponentForCheckAuth />
+    </section>
   );
 }

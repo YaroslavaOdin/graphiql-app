@@ -1,6 +1,7 @@
 /* eslint-disable react-compiler/react-compiler */
 
 import { requestBody } from '../../interfaces/interfaces';
+import { prettifyJSON } from '../../utils/prettifyJSON';
 import JSONViewer from '../JSONViewer/JSONViewer';
 
 export default async function RESTfullResponse({
@@ -34,7 +35,7 @@ export default async function RESTfullResponse({
       .catch(error => error);
   };
 
-  const response: string = await fetchRESTfull(bodyValue);
+  const response: string = prettifyJSON(await fetchRESTfull(bodyValue));
 
   return <JSONViewer value={response} statusCode={statusCode} />;
 }

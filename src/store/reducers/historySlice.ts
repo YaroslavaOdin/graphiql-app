@@ -4,11 +4,12 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 interface historyTypes {
   request: string[];
 }
-
-const localStorageRequest = localStorage.getItem('requests');
+const isBrowser = typeof window !== 'undefined';
+const localStorageRequest = isBrowser && localStorage.getItem('requests') ;
 
 const initialState: historyTypes = {
   request: (localStorageRequest && JSON.parse(localStorageRequest)) || [],
+
 };
 
 export const historySlice = createSlice({

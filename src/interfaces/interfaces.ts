@@ -1,3 +1,5 @@
+
+import { StaticImageData } from 'next/image';
 import { Locale } from '../../i18n.config';
 
 export interface FootherProps {
@@ -8,6 +10,7 @@ export interface DictionaryType {
   navigation: Navigation;
   page: Page;
   foother: Foother;
+  mainPage: IMainPage;
 }
 
 export interface Navigation {
@@ -22,11 +25,14 @@ export interface Page {
   graphiql: Graphiql;
   register: Register;
   restClient: IRestClient;
+  history:History
 }
 
 export interface Home {
   nameOfPage: string;
   greeting: string;
+  welcome: string;
+  team: string;
 }
 
 export interface Graphiql {
@@ -61,6 +67,12 @@ export interface Foother {
   names: Names;
 }
 
+export interface History {
+  title: string,
+  noRequests: string
+}
+
+
 export interface Names {
   alexander: string;
   nikolai: string;
@@ -72,6 +84,47 @@ export interface IGithubLink {
   link: string;
 }
 
+export interface TeamMemberProps {
+  lang: Locale;
+}
+
+export interface ITeamMemberCard {
+  name: string;
+  specialization: string;
+  photo: StaticImageData;
+  about?: string;
+}
+
+export interface notSignInMainPageProps {
+  lang: Locale;
+}
+
+interface IMainPage {
+  btn: IMainPageBtn;
+  about: IMainPageAbout;
+  teamMember: {
+    names: Names;
+    specialization: {
+      engineer: string;
+      leadEngineer: string;
+    };
+  };
+}
+
+interface IMainPageBtn {
+  mainPageBtn: string;
+  restClient: string;
+  graphiqlClient: string;
+  history: string;
+}
+
+interface IMainPageAbout {
+  project: string;
+  rss: string;
+  projectText: string;
+  rssText: string;
+}
+
 interface IRestClient {
   title: string;
   endpoint: string;
@@ -80,6 +133,7 @@ interface IRestClient {
   sendBtn: string;
   prettifyBtn: string;
   response: string;
+  variables: string
 }
 
 export interface requestBody {

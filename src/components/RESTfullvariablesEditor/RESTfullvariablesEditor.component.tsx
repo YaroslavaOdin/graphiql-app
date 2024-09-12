@@ -14,7 +14,10 @@ interface RESTfullvariablesEditorProps {
   variables: object;
 }
 
-export default function RESTfullvariablesEditor({ setVariables, variables }: RESTfullvariablesEditorProps) {
+export default function RESTfullvariablesEditor({
+  setVariables,
+  variables,
+}: RESTfullvariablesEditorProps) {
   const [key, setKey] = useState('');
   const [value, setValue] = useState('');
 

@@ -48,7 +48,7 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
   useEffect(() => {
     if (endpoint && query) {
       setEndpointState(nextBase64.decode(endpoint));
-      const decodedQuery:decodedQueryType = JSON.parse(nextBase64.decode(query));
+      const decodedQuery: decodedQueryType = JSON.parse(nextBase64.decode(query));
       setQueryState(nextBase64.decode(query));
       setValueCodeMirror(decodedQuery.query);
     }

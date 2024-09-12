@@ -134,6 +134,6 @@ export interface requestBody {
 }
 
 export interface decodedQueryType {
-  query:string,
-  variables: string | undefined
+  query: string;
+  variables: string | undefined;
 }

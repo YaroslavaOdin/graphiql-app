@@ -9,7 +9,7 @@ export default function GraphiQLPage({
   params: { endpoint: string; query: string };
 }): JSX.Element {
   const endpoint = nextBase64.decode(params.endpoint);
-  const decodedQuery:decodedQueryType = JSON.parse(nextBase64.decode(params.query)) 
+  const decodedQuery: decodedQueryType = JSON.parse(nextBase64.decode(params.query));
 
   const { query, variables } = decodedQuery;
 

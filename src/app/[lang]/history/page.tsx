@@ -10,9 +10,8 @@ export interface HistoryPageProps {
   params: { lang: Locale };
 }
 
-export default async function HistoryPage({params}:HistoryPageProps) {
- const data = await  getDictionary(params.lang)
-
+export default async function HistoryPage({ params }: HistoryPageProps) {
+  const data = await getDictionary(params.lang);
 
   return (
     <section className="container flex flex-col items-center justify-center">

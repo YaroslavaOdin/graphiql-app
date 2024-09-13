@@ -25,7 +25,7 @@ export default function RESTfullClient({ children }: { children: React.JSX.Eleme
 
   const [endpointState, setEndpointState] = useState<string>(nextBase64.decode(endpoint || ''));
   const [bodyState, setBodyState] = useState<string>(nextBase64.decode(body || ''));
-  const [methodState, setMethodState] = useState<string>('');
+  const [methodState, setMethodState] = useState<string>(method || 'GET');
 
   const { data } = useGetTextByLangQuery(lang);
   const { storeRequest } = useActions();
@@ -55,7 +55,6 @@ export default function RESTfullClient({ children }: { children: React.JSX.Eleme
 
   const HandlePrettify = (): void => {
     setValueCodeMirror(request => prettifyJSON(request));
-
   };
 
   const handleMethodChange = (value: string): void => {
@@ -85,7 +84,7 @@ export default function RESTfullClient({ children }: { children: React.JSX.Eleme
   }
 
   return (
-    <div className="p-5">
+    <div className="p-5 container max-w-[1200px]">
       <div>
         <h1 className="flex justify-center">{data?.page.restClient.title}</h1>
       </div>
@@ -99,7 +98,8 @@ export default function RESTfullClient({ children }: { children: React.JSX.Eleme
       <RESTfullvariablesEditor
         variables={variables}
         setVariables={setVariables}
-        text={data?.page.restClient.variables}
+        title={data?.page.restClient.variables}
+        buttonVariables={data?.page.restClient.buttonVariables}
       />
       <label>{data?.page.restClient.requestBody}</label>
       <ReactCodeMirror

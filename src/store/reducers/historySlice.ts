@@ -5,11 +5,10 @@ interface historyTypes {
   request: string[];
 }
 const isBrowser = typeof window !== 'undefined';
-const localStorageRequest = isBrowser && localStorage.getItem('requests') ;
+const localStorageRequest = isBrowser && localStorage.getItem('requests');
 
 const initialState: historyTypes = {
   request: (localStorageRequest && JSON.parse(localStorageRequest)) || [],
-
 };
 
 export const historySlice = createSlice({

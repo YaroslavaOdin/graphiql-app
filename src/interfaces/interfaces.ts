@@ -24,7 +24,7 @@ export interface Page {
   graphiql: Graphiql;
   register: Register;
   restClient: IRestClient;
-  history:History
+  history: History;
 }
 
 export interface Home {
@@ -67,10 +67,9 @@ export interface Foother {
 }
 
 export interface History {
-  title: string,
-  noRequests: string
+  title: string;
+  noRequests: string;
 }
-
 
 export interface Names {
   alexander: string;
@@ -132,7 +131,8 @@ interface IRestClient {
   sendBtn: string;
   prettifyBtn: string;
   response: string;
-  variables: string
+  variables: string;
+  buttonVariables: string;
 }
 
 export interface requestBody {

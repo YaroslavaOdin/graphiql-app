@@ -4,6 +4,7 @@ import { ITeamMemberCard, TeamMemberProps } from '../../interfaces/interfaces';
 import Image from 'next/image';
 import NaturePicture from '../../../public/nature.jpg';
 import Cat from '../../../public/cat.jpg';
+import alexIMG from '../../../public/alex-photo.jpeg';
 import { useGetTextByLangQuery } from '../../store/reducers/apiLanguageSlice';
 
 export default function TeamMemberCard({ lang }: TeamMemberProps): JSX.Element {
@@ -13,7 +14,7 @@ export default function TeamMemberCard({ lang }: TeamMemberProps): JSX.Element {
     {
       name: data?.mainPage.teamMember.names.alexander || '',
       specialization: data?.mainPage.teamMember.specialization.engineer || '',
-      photo: Cat,
+      photo: alexIMG,
     },
     {
       name: data?.mainPage.teamMember.names.nikolai || '',

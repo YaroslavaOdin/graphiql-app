@@ -11,15 +11,15 @@ import {
 } from '../ui/select';
 import { SelectGroup } from '@radix-ui/react-select';
 
-interface MethodSwitcherProps{
+interface MethodSwitcherProps {
   method: string | undefined;
-  onChange:(v: string) => void
+  onChange: (v: string) => void;
 }
 
-export default function MethodSwitcher({method, onChange}:MethodSwitcherProps): JSX.Element {
+export default function MethodSwitcher({ method, onChange }: MethodSwitcherProps): JSX.Element {
   const Methods: string[] = ['GET', 'PUT', 'POST', 'DELETE'];
 
-  const [selectedMethod, setselectedMethod] = useState(method || "GET");
+  const [selectedMethod, setselectedMethod] = useState(method || 'GET');
 
   const handleMethodChange = (value: string) => {
     setselectedMethod(value);

@@ -5,12 +5,11 @@ import { useGetTextByLangQuery } from '../../store/reducers/apiLanguageSlice';
 import { Locale } from '../../../i18n.config';
 
 interface NoAnyRequestsProps {
-  lang:Locale
+  lang: Locale;
 }
-function NoAnyRequests({lang}:NoAnyRequestsProps) {
-
+function NoAnyRequests({ lang }: NoAnyRequestsProps) {
   const { data } = useGetTextByLangQuery(lang);
-  
+
   return (
     <div className="flex flex-col items-center gap-4">
       <h2> {data?.page.history.noRequests} </h2>

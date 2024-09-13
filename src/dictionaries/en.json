@@ -41,11 +41,12 @@
       "sendBtn": "Send",
       "prettifyBtn": "Prettify",
       "response": "Response:",
-      "variables": "Variables:"
+      "variables": "Variables:",
+      "buttonVariables": "Add"
     },
     "history": {
       "title": "History Requests",
-      "noRequests" : "You haven't executed any requests. It's empty here. Try:"
+      "noRequests": "You haven't executed any requests. It's empty here. Try:"
     }
   },
   "foother": {

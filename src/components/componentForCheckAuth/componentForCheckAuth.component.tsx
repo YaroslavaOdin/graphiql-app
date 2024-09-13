@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../utils/firebaseConfig';
 import { useRouter } from 'next/navigation';
@@ -13,9 +13,7 @@ function ComponentForCheckAuth() {
     }
   }, [user, router, loading]);
 
-  return (
-    <></>
-  )
+  return <></>;
 }
 
-export default ComponentForCheckAuth
+export default ComponentForCheckAuth;

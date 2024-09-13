@@ -1,6 +1,7 @@
 import React from 'react';
 import { cleanup, screen, waitFor } from '@testing-library/react';
-import MainPage from '../app/[lang]/page';
+// import MainPage from '../app/[lang]/page';
+import MainPage from '../components/mainPage/mainPage.component';
 import { describe, expect, vi, it, afterEach, Mock } from 'vitest';
 import { Locale } from '../../i18n.config';
 import { useGetTextByLangQuery } from '../store/reducers/apiLanguageSlice';
@@ -39,7 +40,7 @@ describe('Home component', () => {
     cleanup();
     vi.clearAllMocks();
   });
-  const params = { lang: 'en' as Locale };
+  const lang:Locale = "en";
 
   it('renders correctly with given params', () => {
     const unsubscribeMock = vi.fn();
@@ -51,7 +52,7 @@ describe('Home component', () => {
 
     mockUseGetTextByLangQuery.mockReturnValue(mockDataForRTKHookInMainPage);
 
-    renderWithProviders(<MainPage params={params} />);
+    renderWithProviders(<MainPage lang={lang} />);
     const greetingTitle = screen.getByText(/welcome back/i);
 
     expect(greetingTitle).toBeInTheDocument();
@@ -66,7 +67,7 @@ describe('Home component', () => {
 
     mockUseGetTextByLangQuery.mockReturnValue(mockDataForRTKHookInMainPage);
 
-    renderWithProviders(<MainPage params={params} />);
+    renderWithProviders(<MainPage lang={lang} />);
 
     await waitFor(() => {
       expect(screen.getByText(mockUser.displayName)).toBeInTheDocument();

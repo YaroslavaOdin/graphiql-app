@@ -12,14 +12,24 @@ import { Locale } from '../../../i18n.config';
 import prettify from '../../utils/prettify';
 import GraphqlVariablesEditor from '../graphqlVariablesEditor/graphqlVariablesEditor.component';
 import { decodedQueryType } from '../../interfaces/interfaces';
+import {
+  DocExplorer,
+  EditorContextProvider,
+  ExplorerContextProvider,
+  SchemaContextProvider,
+} from '@graphiql/react';
+import { createGraphiQLFetcher } from '@graphiql/toolkit';
+import { buildClientSchema, getIntrospectionQuery, GraphQLSchema } from 'graphql';
 
 export default function GraphiQLClient({ children }: { children: React.JSX.Element }): JSX.Element {
   const [endpointState, setEndpointState] = useState<string>('');
+  const [sdlState, setSdlState] = useState<string>('');
   const [queryState, setQueryState] = useState<string>('');
   const [headers, setHeaders] = useState<object>({});
   const [headersValue, setHeadersValue] = useState<string>('');
   const [headersKey, setHeadersKey] = useState<string>('');
   const [queryString, setQueryString] = useState<string>('');
+  const [schema, setSchema] = useState<GraphQLSchema>();
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathName = usePathname();
@@ -36,6 +46,26 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
 
     return `/${lang}/graphiql-client/GRAPHQL/${encodedEndpoint}/${encodedQuery}?${queryString}`;
   }, [endpointState, lang, queryState, queryString]);
+
+  useEffect(() => {
+    async function fetchSchema(): Promise<void> {
+      try {
+        const response = await fetch(sdlState, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ query: getIntrospectionQuery() }),
+        });
+        const result = await response.json();
+        const schema = buildClientSchema(result.data);
+        setSchema(schema);
+      } catch (error) {
+        setSchema(undefined);
+      }
+    }
+    fetchSchema();
+  }, [sdlState]);
 
   useEffect(() => {
     if (Object.keys(variables).length !== 0 && valueCodeMirror) {
@@ -97,11 +127,22 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
       <p>{data?.page.graphiql.title}</p>
       <label>
         {data?.page.graphiql.endpoint}
-        <Input onChange={e => setEndpointState(e.target.value)} value={endpointState} />
+        <Input
+          onChange={e => {
+            setEndpointState(e.target.value);
+            setSdlState(e.target.value + '?sdl');
+          }}
+          value={endpointState}
+        />
       </label>
       <label>
         {data?.page.graphiql.sdl}
-        <Input placeholder={`${endpointState}?sdl`} />
+        <Input
+          value={sdlState}
+          onChange={e => {
+            setSdlState(e.target.value);
+          }}
+        />
       </label>
       <Accordion type="single" collapsible>
         <AccordionItem value="headers">
@@ -146,6 +187,17 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
         <label>{data?.page.graphiql.response}</label>
         {children}
       </div>
+      {schema && (
+        <div className="overflow-visible">
+          <EditorContextProvider>
+            <SchemaContextProvider fetcher={createGraphiQLFetcher({ url: sdlState })}>
+              <ExplorerContextProvider>
+                <DocExplorer />
+              </ExplorerContextProvider>
+            </SchemaContextProvider>
+          </EditorContextProvider>
+        </div>
+      )}
     </div>
   );
 }

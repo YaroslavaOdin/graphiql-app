@@ -31,7 +31,7 @@ export default async function GraphiQLResponse({
           myHeaders.append(param, searchParams[param]);
         }
       }
-  }
+    }
 
     return fetch(endpoint, {
       method: 'POST',

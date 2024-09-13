@@ -6,7 +6,6 @@ import { Locale } from '../../i18n.config';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useGetTextByLangQuery } from '../store/reducers/apiLanguageSlice';
 import { mockDataForRTKHookInMainPage } from '../utils/mock/mockData';
-// import userEvent from '@testing-library/user-event';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 
 interface CreateUserWithEmailAndPassword {

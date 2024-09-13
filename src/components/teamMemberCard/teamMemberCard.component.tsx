@@ -39,6 +39,8 @@ export default function TeamMemberCard({ lang }: TeamMemberProps): JSX.Element {
           >
             <div className="rounded-t-lg h-32 overflow-hidden">
               <Image
+                height={268}
+                width={384}
                 className="object-cover object-top w-full"
                 src={NaturePicture}
                 alt="Mountain"
@@ -46,6 +48,8 @@ export default function TeamMemberCard({ lang }: TeamMemberProps): JSX.Element {
             </div>
             <div className="mx-auto w-32 h-32 relative -mt-16 border-4 border-white rounded-full overflow-hidden">
               <Image
+                height={128}
+                width={128}
                 className="object-cover object-center h-32"
                 src={TeamMember.photo}
                 alt="Member photo"

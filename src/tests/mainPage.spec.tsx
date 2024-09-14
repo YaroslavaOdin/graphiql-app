@@ -40,7 +40,7 @@ describe('Home component', () => {
     cleanup();
     vi.clearAllMocks();
   });
-  const lang:Locale = "en";
+  const lang: Locale = 'en';
 
   it('renders correctly with given params', () => {
     const unsubscribeMock = vi.fn();

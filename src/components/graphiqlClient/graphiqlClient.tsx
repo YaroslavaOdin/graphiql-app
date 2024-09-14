@@ -127,7 +127,7 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
 
   return (
     <div className="p-2 container max-w-[1200px]">
-      <p className='text-center'>{data?.page.graphiql.title}</p>
+      <p className="text-center">{data?.page.graphiql.title}</p>
       <label>
         {data?.page.graphiql.endpoint}
         <Input

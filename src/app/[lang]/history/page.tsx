@@ -1,19 +1,23 @@
-'use client';
+import dynamic from 'next/dynamic';
+import ComponentForCheckAuth from '../../../components/componentForCheckAuth/componentForCheckAuth.component';
+import { Locale } from '../../../../i18n.config';
+import { getDictionary } from '../../../lib/dictionary';
+const Requests = dynamic(() => import('../../../components/requests/requests.component'), {
+  ssr: false,
+});
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '../../../utils/firebaseConfig';
+export interface HistoryPageProps {
+  params: { lang: Locale };
+}
 
-export default function HistoryPage(): JSX.Element {
-  const router = useRouter();
-  const [user, loading] = useAuthState(auth);
+export default async function HistoryPage({ params }: HistoryPageProps) {
+  const data = await getDictionary(params.lang);
 
-  useEffect(() => {
-    if (!user && !loading) {
-      router.push('/');
-    }
-  }, [user, router, loading]);
-
-  return <div>{user?.displayName}</div>;
+  return (
+    <section className="container flex flex-col items-center justify-center">
+      <h2>{data.page.history.title} </h2>
+      <Requests />
+      <ComponentForCheckAuth />
+    </section>
+  );
 }

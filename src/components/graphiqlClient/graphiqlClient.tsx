@@ -11,6 +11,8 @@ import { useGetTextByLangQuery } from '../../store/reducers/apiLanguageSlice';
 import { Locale } from '../../../i18n.config';
 import prettify from '../../utils/prettify';
 import GraphqlVariablesEditor from '../graphqlVariablesEditor/graphqlVariablesEditor.component';
+import useActions from '../../hooks/useAction';
+import ComponentForCheckAuth from '../componentForCheckAuth/componentForCheckAuth.component';
 
 export default function GraphiQLClient({ children }: { children: React.JSX.Element }): JSX.Element {
   const [endpointState, setEndpointState] = useState<string>('');
@@ -22,7 +24,7 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
 
   const [variables, setVariables] = useState('');
   const [valueCodeMirror, setValueCodeMirror] = useState('');
-
+  const { storeRequest } = useActions();
   const newPath = useMemo(() => {
     const encodedEndpoint = nextBase64.encode(endpointState).replace(/=/g, '');
     const encodedQuery = nextBase64.encode(queryState).replace(/=/g, '');
@@ -52,6 +54,7 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
   }, [endpoint, query]);
 
   function HandleSendRequest() {
+    storeRequest(newPath);
     router.push(newPath);
   }
 
@@ -64,8 +67,8 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
   }
 
   return (
-    <div className="p-2">
-      <p>{data?.page.graphiql.title}</p>
+    <div className="p-2 container max-w-[1200px]">
+      <p className='text-center'>{data?.page.graphiql.title}</p>
       <label>
         {data?.page.graphiql.endpoint}
         <Input onChange={e => setEndpointState(e.target.value)} value={endpointState} />
@@ -87,6 +90,7 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
         </AccordionItem>
       </Accordion>
       <GraphqlVariablesEditor
+        text={data?.page.restClient.variables}
         variables={variables}
         setVariables={setVariables}
         HandleFocusOut={HandleFocusOut}
@@ -109,6 +113,7 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
         <label>{data?.page.graphiql.response}</label>
         {children}
       </div>
+      <ComponentForCheckAuth />
     </div>
   );
 }

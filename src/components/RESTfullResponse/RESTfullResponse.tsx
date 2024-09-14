@@ -1,6 +1,7 @@
 /* eslint-disable react-compiler/react-compiler */
 
 import { requestBody } from '../../interfaces/interfaces';
+
 import { prettifyJSON } from '../../utils/prettifyJSON';
 import JSONViewer from '../JSONViewer/JSONViewer';
 

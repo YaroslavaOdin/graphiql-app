@@ -1,3 +1,7 @@
 export const prettifyJSON = (value: string): string => {
-  return value ? JSON.stringify(JSON.parse(value), null, 2) : value;
+  try {
+    return value ? JSON.stringify(JSON.parse(value), null, 2) : value;
+  } catch (error) {
+    throw new Error('Invalid json');
+  }
 };

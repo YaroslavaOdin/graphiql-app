@@ -31,6 +31,7 @@ function Requests() {
       ) : (
         allRequests.map((item, i) => (
           <li
+            role='item-request'
             className="cursor-pointer text-green-700 hover:text-green-500"
             key={i}
             onClick={() => redirectToRespectiveRoute(item)}

@@ -117,3 +117,9 @@ export const mockUser = {
   apiKey: 'AIzaSyAhBsq48UCrjvkkbVnSHwi29yr9Gc3E0nA',
   appName: '[DEFAULT]',
 };
+
+export const mockRequest = [
+  '/ru/restfull-client/GET/aHR0cHM6Ly9hcGkuZXNjdWVsYWpzLmNvL2FwaS92MS9wcm9kdWN0cw/',
+  '/ru/restfull-client/POST/aHR0cHM6Ly9mYWtlc3RvcmVhcGkuY29tL2NhcnRz/ewogICJ1c2VySWQiOiA1LAogICJkYXRlIjogIjIiLAogICJwcm9kdWN0cyI6IFsKICAgIHsKICAgICAgInByb2R1Y3RJZCI6IDUsCiAgICAgICJxdWFudGl0eSI6IDEKICAgIH0sCiAgICB7CiAgICAgICJwcm9kdWN0SWQiOiAxLAogICAgICAicXVhbnRpdHkiOiA1CiAgICB9CiAgXQp9',
+  '/en/restfull-client/POST/aHR0cHM6Ly9mYWtlc3RvcmVhcGkuY29tL2NhcnRz/ewogICJ1c2VySWQiOiA1LAogICJkYXRlIjogIjIwMjAtMDItMDMiLAogICJwcm9kdWN0cyI6IFsKICAgIHsKICAgICAgInByb2R1Y3RJZCI6ICI2NjYiLAogICAgICAicXVhbnRpdHkiOiAxCiAgICB9LAogICAgewogICAgICAicHJvZHVjdElkIjogMSwKICAgICAgInF1YW50aXR5IjogNQogICAgfQogIF0KfQ',
+];

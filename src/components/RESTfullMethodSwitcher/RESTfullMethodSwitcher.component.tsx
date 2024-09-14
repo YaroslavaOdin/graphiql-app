@@ -12,9 +12,8 @@ import {
 import { SelectGroup } from '@radix-ui/react-select';
 
 export default function MethodSwitcher(props: { onChange: (v: string) => void }): JSX.Element {
-  const Methods: string[] = ['GET', 'PUT', 'POST', 'DELETE'];
-
-  const [selectedMethod, setselectedMethod] = useState(Methods[0]);
+  const Methods: string[] = ['GET', 'PUT', 'POST', 'PATCH', 'DELETE'];
+  const [selectedMethod, setselectedMethod] = useState('');
 
   const handleMethodChange = (value: string) => {
     setselectedMethod(value);

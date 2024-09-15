@@ -49,6 +49,8 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
     return `/${lang}/graphiql-client/GRAPHQL/${encodedEndpoint}/${encodedQuery}?${queryString}`;
   }, [endpointState, lang, queryState, queryString]);
 
+  const [keyAndValue] = searchParams.entries();
+
   useEffect(() => {
     async function fetchSchema(): Promise<void> {
       try {
@@ -153,12 +155,12 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
             <AccordionTrigger>{data?.page.graphiql.headers}</AccordionTrigger>
             <AccordionContent className="flex">
               <Input
-                value={headersKey}
+                defaultValue={keyAndValue && keyAndValue[0]}
                 placeholder={data?.page.graphiql.key}
                 onChange={e => setHeadersKey(e.target.value)}
               />
               <Input
-                value={headersValue}
+                defaultValue={keyAndValue && keyAndValue[1]}
                 placeholder={data?.page.graphiql.value}
                 onChange={e => setHeadersValue(e.target.value)}
               />

@@ -3,21 +3,38 @@
 import ReactCodeMirror from '@uiw/react-codemirror';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
 import nextBase64 from 'next-base64';
 import { useGetTextByLangQuery } from '../../store/reducers/apiLanguageSlice';
 import { Locale } from '../../../i18n.config';
 import prettify from '../../utils/prettify';
 import GraphqlVariablesEditor from '../graphqlVariablesEditor/graphqlVariablesEditor.component';
+import { decodedQueryType } from '../../interfaces/interfaces';
+import {
+  DocExplorer,
+  EditorContextProvider,
+  ExplorerContextProvider,
+  SchemaContextProvider,
+} from '@graphiql/react';
+import { createGraphiQLFetcher } from '@graphiql/toolkit';
+import { buildClientSchema, getIntrospectionQuery, GraphQLSchema } from 'graphql';
 import useActions from '../../hooks/useAction';
 import ComponentForCheckAuth from '../componentForCheckAuth/componentForCheckAuth.component';
 
 export default function GraphiQLClient({ children }: { children: React.JSX.Element }): JSX.Element {
   const [endpointState, setEndpointState] = useState<string>('');
+  const [sdlState, setSdlState] = useState<string>('');
   const [queryState, setQueryState] = useState<string>('');
+  const [headers, setHeaders] = useState<object>({});
+  const [headersValue, setHeadersValue] = useState<string>('');
+  const [headersKey, setHeadersKey] = useState<string>('');
+  const [queryString, setQueryString] = useState<string>('');
+  const [schema, setSchema] = useState<GraphQLSchema>();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathName = usePathname();
   const { lang, endpoint, query }: { lang: Locale; endpoint: string; query: string } = useParams();
 
   const { data } = useGetTextByLangQuery(lang);
@@ -29,8 +46,28 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
     const encodedEndpoint = nextBase64.encode(endpointState).replace(/=/g, '');
     const encodedQuery = nextBase64.encode(queryState).replace(/=/g, '');
 
-    return `/${lang}/graphiql-client/GRAPHQL/${encodedEndpoint}/${encodedQuery}`;
-  }, [endpointState, lang, queryState]);
+    return `/${lang}/graphiql-client/GRAPHQL/${encodedEndpoint}/${encodedQuery}?${queryString}`;
+  }, [endpointState, lang, queryState, queryString]);
+
+  useEffect(() => {
+    async function fetchSchema(): Promise<void> {
+      try {
+        const response = await fetch(sdlState, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ query: getIntrospectionQuery() }),
+        });
+        const result = await response.json();
+        const schema = buildClientSchema(result.data);
+        setSchema(schema);
+      } catch (error) {
+        setSchema(undefined);
+      }
+    }
+    fetchSchema();
+  }, [sdlState]);
 
   useEffect(() => {
     if (Object.keys(variables).length !== 0 && valueCodeMirror) {
@@ -49,7 +86,9 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
   useEffect(() => {
     if (endpoint && query) {
       setEndpointState(nextBase64.decode(endpoint));
+      const decodedQuery: decodedQueryType = JSON.parse(nextBase64.decode(query));
       setQueryState(nextBase64.decode(query));
+      setValueCodeMirror(decodedQuery.query);
     }
   }, [endpoint, query]);
 
@@ -66,25 +105,64 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
     setValueCodeMirror(prev => prettify(prev));
   }
 
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(name, value);
+
+      return params.toString();
+    },
+    [searchParams],
+  );
+
+  function HandleAddHeader() {
+    if (headersKey && headersValue) {
+      setHeaders({ ...headers, [headersKey]: headersValue });
+      setQueryString(createQueryString(headersKey, headersValue));
+      history.replaceState(null, '', pathName + '?' + createQueryString(headersKey, headersValue));
+      setHeadersKey('');
+      setHeadersValue('');
+    }
+  }
+
   return (
     <div className="p-2 container max-w-[1200px]">
-      <p className='text-center'>{data?.page.graphiql.title}</p>
+      <p className="text-center">{data?.page.graphiql.title}</p>
       <label>
         {data?.page.graphiql.endpoint}
-        <Input onChange={e => setEndpointState(e.target.value)} value={endpointState} />
+        <Input
+          onChange={e => {
+            setEndpointState(e.target.value);
+            setSdlState(e.target.value + '?sdl');
+          }}
+          value={endpointState}
+        />
       </label>
       <label>
         {data?.page.graphiql.sdl}
-        <Input placeholder={`${endpointState}?sdl`} />
+        <Input
+          value={sdlState}
+          onChange={e => {
+            setSdlState(e.target.value);
+          }}
+        />
       </label>
       <Accordion type="single" collapsible>
         <AccordionItem value="headers">
           <label>
             <AccordionTrigger>{data?.page.graphiql.headers}</AccordionTrigger>
             <AccordionContent className="flex">
-              <Input placeholder={data?.page.graphiql.key} />
-              <Input placeholder={data?.page.graphiql.value} />
-              <Button>{data?.page.graphiql.add}</Button>
+              <Input
+                value={headersKey}
+                placeholder={data?.page.graphiql.key}
+                onChange={e => setHeadersKey(e.target.value)}
+              />
+              <Input
+                value={headersValue}
+                placeholder={data?.page.graphiql.value}
+                onChange={e => setHeadersValue(e.target.value)}
+              />
+              <Button onClick={() => HandleAddHeader()}>{data?.page.graphiql.add}</Button>
             </AccordionContent>
           </label>
         </AccordionItem>
@@ -113,6 +191,17 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
         <label>{data?.page.graphiql.response}</label>
         {children}
       </div>
+      {schema && (
+        <div className="overflow-visible">
+          <EditorContextProvider>
+            <SchemaContextProvider fetcher={createGraphiQLFetcher({ url: sdlState })}>
+              <ExplorerContextProvider>
+                <DocExplorer />
+              </ExplorerContextProvider>
+            </SchemaContextProvider>
+          </EditorContextProvider>
+        </div>
+      )}
       <ComponentForCheckAuth />
     </div>
   );

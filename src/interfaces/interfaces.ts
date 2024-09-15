@@ -140,3 +140,8 @@ export interface requestBody {
   headers: Headers;
   body: string | undefined;
 }
+
+export interface decodedQueryType {
+  query: string;
+  variables: string | undefined;
+}

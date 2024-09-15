@@ -6,9 +6,15 @@ interface VariablesEditorProps {
   setVariables: Dispatch<SetStateAction<string>>;
   variables: string;
   HandleFocusOut: () => void;
+  text: string | undefined;
 }
 
-function GraphqlVariablesEditor({ setVariables, variables, HandleFocusOut }: VariablesEditorProps) {
+function GraphqlVariablesEditor({
+  setVariables,
+  variables,
+  HandleFocusOut,
+  text,
+}: VariablesEditorProps) {
   const [showEditor, setShowEditor] = useState(false);
 
   const toggleEditor = () => setShowEditor(prev => !prev);
@@ -16,7 +22,7 @@ function GraphqlVariablesEditor({ setVariables, variables, HandleFocusOut }: Var
   return (
     <div>
       <Button variant="link" className="p-0 text-base" onClick={toggleEditor}>
-        Variables:
+        {text}
       </Button>
 
       <div

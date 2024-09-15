@@ -29,10 +29,12 @@ export default function MainPage({ lang }: MainPageProps): JSX.Element {
       <div className="flex justify-center gap-4 pt-3 mb-5">
         {user ? (
           <div>
-            <h1 className="flex justify-center font-semibold text-5xl mb-10 mt-5">
-              {data?.page.home.greeting},<span role="displayName">{user?.displayName}</span>
-            </h1>
-            <div className="flex justify-center mt-8">
+            <div className="flex flex-wrap gap-4 justify-center font-semibold text-5xl mb-10 mt-5">
+              <h1 className="text-center"> {`${data?.page.home.greeting}, `} </h1>{' '}
+              <span role="displayName">{user?.displayName}</span>
+            </div>
+
+            <div className="flex justify-center flex-wrap gap-4 mt-8">
               <Button className="bg-slate-800 hover:bg-slate-600 mr-6">
                 <Link href={`${lang}/restfull-client`}>{data?.mainPage.btn.restClient}</Link>
               </Button>

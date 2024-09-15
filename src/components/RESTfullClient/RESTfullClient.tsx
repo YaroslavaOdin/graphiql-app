@@ -14,25 +14,31 @@ import RESTfullvariablesEditor from '../RESTfullvariablesEditor/RESTfullvariable
 import { jsonrepair } from 'jsonrepair';
 import { findNestedValueIfExist } from '../../utils/functionHelpers';
 import RESTfullHeadersEditor from '../RESTfullHeadersEditor/RESTfullHeadersEditor.component';
+import useActions from '../../hooks/useAction';
+import ComponentForCheckAuth from '../componentForCheckAuth/componentForCheckAuth.component';
 
 export default function RESTfullClient({ children }: { children: React.JSX.Element }): JSX.Element {
   const router = useRouter();
   const searchParams = useSearchParams();
-
-  const [endpointState, setEndpointState] = useState<string>('');
-  const [bodyState, setBodyState] = useState<string>('');
-  const [methodState, setMethodState] = useState<string>('');
   const {
     lang,
     method,
     endpoint,
     body,
-  }: { lang: Locale; method: string; endpoint: string; body: string } = useParams();
-  const { data } = useGetTextByLangQuery(lang);
+  }: { lang: Locale; method?: string; endpoint?: string; body?: string } = useParams();
 
+  const [endpointState, setEndpointState] = useState<string>(nextBase64.decode(endpoint || ''));
+  const [bodyState, setBodyState] = useState<string>(nextBase64.decode(body || ''));
+  const [methodState, setMethodState] = useState<string>(method || 'GET');
+  const [endpointState, setEndpointState] = useState<string>('');
+  const [bodyState, setBodyState] = useState<string>('');
+  const [methodState, setMethodState] = useState<string>('');
   const [variables, setVariables] = useState<{ [key: string]: unknown }>({});
   const [headers, setHeaders] = useState<{ [key: string]: string }>({});
   const [valueCodeMirror, setValueCodeMirror] = useState('');
+
+  const { data } = useGetTextByLangQuery(lang);
+  const { storeRequest } = useActions();
 
   const newPath = useMemo(() => {
     const encodedEndpoint = nextBase64.encode(endpointState).replace(/=/g, '');
@@ -57,17 +63,16 @@ export default function RESTfullClient({ children }: { children: React.JSX.Eleme
   );
 
   useEffect(() => {
-    if (endpoint && body) {
-      setEndpointState(nextBase64.decode(endpoint));
-      setBodyState(nextBase64.decode(body));
-    }
-  }, [method, endpoint, body]);
+    history.replaceState(null, '', newPath);
+  }, [newPath]);
 
   const HandleSendRequest = (): void => {
+    storeRequest(newPath);
     router.push(newPath);
   };
 
   const HandleFocusOut = (): void => {
+    replaceVariables();
     history.replaceState(null, '', newPath);
   };
 
@@ -79,16 +84,19 @@ export default function RESTfullClient({ children }: { children: React.JSX.Eleme
     setMethodState(value);
   };
 
-  useEffect(() => {
-    if (Object.keys(variables).length !== 0 && valueCodeMirror) {
-      const repairJson = jsonrepair(valueCodeMirror);
-      const parseJson = JSON.parse(repairJson);
+  function replaceVariables() {
+    if (Object.keys(variables).length !== 0) {
+      let res = valueCodeMirror;
 
-      const newBody: object = findNestedValueIfExist(parseJson, variables);
-
-      setBodyState(JSON.stringify(newBody));
+      for (const key in variables) {
+        const regex = new RegExp(`{{${key}}}`, 'g');
+        res = res.replace(regex, JSON.stringify(variables[key]));
+      }
+      setBodyState(res);
+    } else {
+      setBodyState(valueCodeMirror);
     }
-  }, [valueCodeMirror, variables, newPath]);
+  }
 
   useEffect(() => {
     history.replaceState(null, '', updateSearchQuery(headers));
@@ -99,20 +107,23 @@ export default function RESTfullClient({ children }: { children: React.JSX.Eleme
   }, [bodyState]);
 
   return (
-    <div className="p-5">
+    <div className="p-5 container max-w-[1200px]">
       <div>
         <h1 className="flex justify-center">{data?.page.restClient.title}</h1>
       </div>
       <label>
         {data?.page.restClient.endpoint}
-        <Input onChange={e => setEndpointState(e.target.value)} value={endpointState} />
+        <Input onChange={e => setEndpointState(e.target.value.trim())} value={endpointState} />
       </label>
       <div>{data?.page.restClient.methods}</div>
-      <MethodSwitcher onChange={handleMethodChange}></MethodSwitcher>
-
-      <RESTfullvariablesEditor variables={variables} setVariables={setVariables} />
+      <MethodSwitcher onChange={handleMethodChange} method={method}></MethodSwitcher>
+      <RESTfullvariablesEditor
+        variables={variables}
+        setVariables={setVariables}
+        title={data?.page.restClient.variables}
+        buttonVariables={data?.page.restClient.buttonVariables}
+      />
       <RESTfullHeadersEditor headers={headers} setHeaders={setHeaders} />
-
       <label>{data?.page.restClient.requestBody}</label>
       <ReactCodeMirror
         basicSetup={{
@@ -130,6 +141,7 @@ export default function RESTfullClient({ children }: { children: React.JSX.Eleme
         <label>{data?.page.restClient.response}</label>
         {children}
       </div>
+      <ComponentForCheckAuth />
     </div>
   );
 }

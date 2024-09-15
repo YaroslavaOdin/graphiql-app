@@ -22,6 +22,8 @@ vi.mock('next/navigation', () => ({
     push: vi.fn(),
   }),
   useParams: vi.fn(),
+  useSearchParams: vi.fn(),
+  usePathname: vi.fn(),
 }));
 
 interface ApiLanguageSlice {

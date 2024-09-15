@@ -39,6 +39,7 @@ describe('Home component', () => {
     cleanup();
     vi.clearAllMocks();
   });
+  const lang: Locale = 'en';
 
   beforeEach(() => {
     vi.mock('next/navigation', () => ({
@@ -48,7 +49,6 @@ describe('Home component', () => {
       usePathname: () => '/ru',
     }));
   });
-  const lang: Locale = 'en';
 
   it('renders correctly with given params and without login', () => {
     const unsubscribeMock = vi.fn();

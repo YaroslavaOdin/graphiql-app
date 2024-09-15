@@ -1,14 +1,14 @@
 import { describe, expect, vi, it, Mock } from 'vitest';
-import { getByRole, screen } from '@testing-library/react';
+import { getByRole } from '@testing-library/react';
 import { renderWithProviders } from '../utils/test-redux';
-import RESTfullClient from '../components/RESTfullClient/RESTfullClient';
-import JSONViewer from '../components/JSONViewer/JSONViewer';
+// import RESTfullClient from '../components/RESTfullClient/RESTfullClient';
+// import JSONViewer from '../components/JSONViewer/JSONViewer';
 import { useParams } from 'next/navigation';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useGetTextByLangQuery } from '../store/reducers/apiLanguageSlice';
 import { mockDataForRTKHookInMainPage } from '../utils/mock/mockData';
 import RESTfullPage from '../app/[lang]/restfull-client/page';
-import RESTfullPageMethodEndpoint from '../app/[lang]/restfull-client/[method]/[endpoint]/page';
+// import RESTfullPageMethodEndpoint from '../app/[lang]/restfull-client/[method]/[endpoint]/page';
 
 
 vi.mock('firebase/auth', () => ({
@@ -43,7 +43,7 @@ vi.mock('../store/reducers/apiLanguageSlice', async importOriginal => {
 
 describe('RESTfullClient component',  () => {
 
-  const params =  { method: "GET", endpoint: 'aHR0cHM6Ly9hcGkuZXNjdWVsYWpzLmNvL2FwaS92MS9wcm9kdWN0cw' }
+  // const params =  { method: "GET", endpoint: 'aHR0cHM6Ly9hcGkuZXNjdWVsYWpzLmNvL2FwaS92MS9wcm9kdWN0cw' }
 
   it('render RESTfullClient without method and endpoint', async () => {
 

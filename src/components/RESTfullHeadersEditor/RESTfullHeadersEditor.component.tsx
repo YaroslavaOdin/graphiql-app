@@ -4,7 +4,7 @@ import { SetStateAction, useState, Dispatch } from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import { Locale } from '../../../i18n.config';
 import { useGetTextByLangQuery } from '../../store/reducers/apiLanguageSlice';
 
@@ -20,6 +20,7 @@ interface RESTfullHeadersEditorProps {
 export default function RESTfullHeadersEditor({ setHeaders, headers }: RESTfullHeadersEditorProps) {
   const [key, setKey] = useState('');
   const [value, setValue] = useState('');
+  // const searchParams = useSearchParams()
 
   const { lang }: { lang: Locale } = useParams();
   const { data } = useGetTextByLangQuery(lang);

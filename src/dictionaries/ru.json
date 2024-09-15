@@ -42,7 +42,9 @@
       "prettifyBtn": "Отредактировать",
       "response": "Ответ:",
       "variables": "Переменные:",
-      "buttonVariables": "Добавить"
+      "buttonVariables": "Добавить",
+      "headers": "Заголовки:",
+      "addHeaders": "Добавить"
     },
     "history": {
       "title": "История запросов",

@@ -1,5 +1,4 @@
 import { describe, vi, it, Mock } from 'vitest';
-import { screen } from '@testing-library/react';
 import { renderWithProviders } from '../utils/test-redux';
 import JSONViewer from '../components/JSONViewer/JSONViewer';
 import { useParams } from 'next/navigation';
@@ -49,7 +48,5 @@ describe('GraphiQLClient component', () => {
         <JSONViewer value="" statusCode={undefined} />
       </GraphiQLClient>,
     );
-
-    screen.logTestingPlaygroundURL();
   });
 });

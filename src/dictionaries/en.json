@@ -42,7 +42,9 @@
       "prettifyBtn": "Prettify",
       "response": "Response:",
       "variables": "Variables:",
-      "buttonVariables": "Add"
+      "buttonVariables": "Add",
+      "headers": "Headers:",
+      "addHeaders": "Add"
     },
     "history": {
       "title": "History Requests",

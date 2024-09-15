@@ -17,7 +17,7 @@ interface MethodSwitcherProps {
 }
 
 export default function MethodSwitcher({ method, onChange }: MethodSwitcherProps): JSX.Element {
-  const Methods: string[] = ['GET', 'PUT', 'POST', 'DELETE'];
+  const Methods: string[] = ['GET', 'PUT', 'POST', 'PATCH', 'DELETE'];
 
   const [selectedMethod, setselectedMethod] = useState(method || 'GET');
 

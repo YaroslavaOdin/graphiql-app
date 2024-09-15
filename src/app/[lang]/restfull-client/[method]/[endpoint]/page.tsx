@@ -4,15 +4,21 @@ import RESTfullClient from '../../../../../components/RESTfullClient/RESTfullCli
 
 export default function RESTfullPage({
   params,
+  searchParams,
 }: {
   params: { method: string; endpoint: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 }): JSX.Element {
   const method = params.method;
   const endpoint = nextBase64.decode(params.endpoint);
 
   return (
     <RESTfullClient>
-      <RESTfullResponse method={method} endpoint={endpoint}></RESTfullResponse>
+      <RESTfullResponse
+        method={method}
+        endpoint={endpoint}
+        searchParams={searchParams}
+      ></RESTfullResponse>
     </RESTfullClient>
   );
 }

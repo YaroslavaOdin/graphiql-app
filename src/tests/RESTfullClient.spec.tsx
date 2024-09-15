@@ -1,5 +1,5 @@
 import { describe, expect, vi, it, Mock } from 'vitest';
-import { screen } from '@testing-library/react';
+import { getByRole, screen } from '@testing-library/react';
 import { renderWithProviders } from '../utils/test-redux';
 import RESTfullClient from '../components/RESTfullClient/RESTfullClient';
 import JSONViewer from '../components/JSONViewer/JSONViewer';
@@ -7,6 +7,8 @@ import { useParams } from 'next/navigation';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useGetTextByLangQuery } from '../store/reducers/apiLanguageSlice';
 import { mockDataForRTKHookInMainPage } from '../utils/mock/mockData';
+import RESTfullPage from '../app/[lang]/restfull-client/page';
+import RESTfullPageMethodEndpoint from '../app/[lang]/restfull-client/[method]/[endpoint]/page';
 
 
 vi.mock('firebase/auth', () => ({
@@ -39,19 +41,35 @@ vi.mock('../store/reducers/apiLanguageSlice', async importOriginal => {
   };
 });
 
-describe('RESTfullClient component', () => {
+describe('RESTfullClient component',  () => {
 
-  it('render RESTfullClient', () => {
-    (useAuthState as Mock).mockReturnValue([null, false]);
+  const params =  { method: "GET", endpoint: 'aHR0cHM6Ly9hcGkuZXNjdWVsYWpzLmNvL2FwaS92MS9wcm9kdWN0cw' }
+
+  it('render RESTfullClient without method and endpoint', async () => {
+
+    (useAuthState as Mock).mockReturnValue([{ uuid: 'test-user' }, false]);
+    (useGetTextByLangQuery as Mock).mockReturnValue(mockDataForRTKHookInMainPage);
+    vi.mocked(useParams).mockReturnValue({ lang: "en" });
+    
+
+    const {container} =   renderWithProviders(<RESTfullPage />);
+
+  //  const {container} =  renderWithProviders(
+  //     <RESTfullClient>
+  //       <JSONViewer value="" statusCode={undefined} />
+  //     </RESTfullClient>,
+  //   );
+
+     const input = getByRole(container,'textbox', { name: /endpoint:/i })
+     expect(input).toBeInTheDocument()
+
+  });
+  it('render RESTfullClient with method and endpoint', () => {
+    (useAuthState as Mock).mockReturnValue([{ uuid: 'test-user' }, false]);
     (useGetTextByLangQuery as Mock).mockReturnValue(mockDataForRTKHookInMainPage);
     vi.mocked(useParams).mockReturnValue({ lang: "en", method: "GET", endpoint: 'aHR0cHM6Ly9hcGkuZXNjdWVsYWpzLmNvL2FwaS92MS9wcm9kdWN0cw' });
-    
-    renderWithProviders(
-      <RESTfullClient>
-        <JSONViewer value="" statusCode={undefined} />
-      </RESTfullClient>,
-    );
 
-    screen.logTestingPlaygroundURL()
-  });
+    // renderWithProviders(<RESTfullPageMethodEndpoint params={params}/>);
+
+  })
 });

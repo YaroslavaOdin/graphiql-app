@@ -133,6 +133,8 @@ interface IRestClient {
   response: string;
   variables: string;
   buttonVariables: string;
+  headers: string;
+  addHeaders: string;
 }
 
 export interface requestBody {

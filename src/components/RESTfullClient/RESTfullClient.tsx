@@ -3,19 +3,21 @@
 import ReactCodeMirror from '@uiw/react-codemirror';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
-import { useEffect, useMemo, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import nextBase64 from 'next-base64';
 import { useGetTextByLangQuery } from '../../store/reducers/apiLanguageSlice';
 import { Locale } from '../../../i18n.config';
 import MethodSwitcher from '../RESTfullMethodSwitcher/RESTfullMethodSwitcher.component';
 import { prettifyJSON } from '../../utils/prettifyJSON';
 import RESTfullvariablesEditor from '../RESTfullvariablesEditor/RESTfullvariablesEditor.component';
+import RESTfullHeadersEditor from '../RESTfullHeadersEditor/RESTfullHeadersEditor.component';
 import useActions from '../../hooks/useAction';
 import ComponentForCheckAuth from '../componentForCheckAuth/componentForCheckAuth.component';
 
 export default function RESTfullClient({ children }: { children: React.JSX.Element }): JSX.Element {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const {
     lang,
     method,
@@ -26,18 +28,34 @@ export default function RESTfullClient({ children }: { children: React.JSX.Eleme
   const [endpointState, setEndpointState] = useState<string>(nextBase64.decode(endpoint || ''));
   const [bodyState, setBodyState] = useState<string>(nextBase64.decode(body || ''));
   const [methodState, setMethodState] = useState<string>(method || 'GET');
+  const [variables, setVariables] = useState<{ [key: string]: unknown }>({});
+  const [headers, setHeaders] = useState<{ [key: string]: string }>({});
+  const [valueCodeMirror, setValueCodeMirror] = useState('');
 
   const { data } = useGetTextByLangQuery(lang);
   const { storeRequest } = useActions();
-
-  const [variables, setVariables] = useState<{ [key: string]: unknown }>({});
-  const [valueCodeMirror, setValueCodeMirror] = useState('');
 
   const newPath = useMemo(() => {
     const encodedEndpoint = nextBase64.encode(endpointState).replace(/=/g, '');
     const encodedBody = nextBase64.encode(bodyState).replace(/=/g, '');
     return `/${lang}/restfull-client/${methodState}/${encodedEndpoint}/${encodedBody}`;
   }, [methodState, endpointState, bodyState, lang]);
+
+  const updateSearchQuery = useCallback(
+    (updatedQuery: { [key: string]: string }) => {
+      const params = new URLSearchParams(`${searchParams}`);
+      Object.keys(updatedQuery).forEach(key => {
+        if (updatedQuery[key]) {
+          params.set(key, updatedQuery[key]);
+        } else {
+          params.delete(key);
+        }
+      });
+      const queryString = params.toString();
+      return queryString ? `${newPath}?${queryString}` : newPath;
+    },
+    [searchParams, newPath],
+  );
 
   useEffect(() => {
     history.replaceState(null, '', newPath);
@@ -75,6 +93,14 @@ export default function RESTfullClient({ children }: { children: React.JSX.Eleme
     }
   }
 
+  useEffect(() => {
+    history.replaceState(null, '', updateSearchQuery(headers));
+  }, [headers, updateSearchQuery]);
+
+  useEffect(() => {
+    setValueCodeMirror(prettifyJSON(bodyState));
+  }, [bodyState]);
+
   return (
     <div className="p-5 container max-w-[1200px]">
       <div>
@@ -86,13 +112,13 @@ export default function RESTfullClient({ children }: { children: React.JSX.Eleme
       </label>
       <div>{data?.page.restClient.methods}</div>
       <MethodSwitcher onChange={handleMethodChange} method={method}></MethodSwitcher>
-
       <RESTfullvariablesEditor
         variables={variables}
         setVariables={setVariables}
         title={data?.page.restClient.variables}
         buttonVariables={data?.page.restClient.buttonVariables}
       />
+      <RESTfullHeadersEditor headers={headers} setHeaders={setHeaders} />
       <label>{data?.page.restClient.requestBody}</label>
       <ReactCodeMirror
         basicSetup={{

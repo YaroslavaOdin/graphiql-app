@@ -11,6 +11,7 @@ export default defineConfig({
     mockReset: true,
     testTimeout: 10000,
     coverage: {
+      include: ['src/**/*.{ts,tsx}'],
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
     },

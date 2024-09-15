@@ -41,7 +41,7 @@ function Header({ lang }: HeaderProps) {
       <nav className="flex justify-between gap-4 p-4 items-center">
         <div className="flex items-center gap-3">
           <Link href={`/${lang}`}>
-            <Image src={Logo} alt="logo" />
+            <Image src={Logo} alt="logo" width={56} height={56} />
           </Link>
           <LanguageSwitcher lang={lang} />
         </div>

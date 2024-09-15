@@ -1,8 +1,7 @@
 import React from 'react';
 import { cleanup, screen, waitFor } from '@testing-library/react';
-// import MainPage from '../app/[lang]/page';
 import MainPage from '../components/mainPage/mainPage.component';
-import { describe, expect, vi, it, afterEach, Mock } from 'vitest';
+import { describe, expect, vi, it, afterEach, Mock, beforeEach } from 'vitest';
 import { Locale } from '../../i18n.config';
 import { useGetTextByLangQuery } from '../store/reducers/apiLanguageSlice';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -42,7 +41,16 @@ describe('Home component', () => {
   });
   const lang: Locale = 'en';
 
-  it('renders correctly with given params', () => {
+  beforeEach(() => {
+    vi.mock('next/navigation', () => ({
+      useRouter: () => ({
+        replace: vi.fn(),
+      }),
+      usePathname: () => '/ru',
+    }));
+  });
+
+  it('renders correctly with given params and without login', () => {
     const unsubscribeMock = vi.fn();
 
     mockAuthStateChanged.mockImplementation((auth, callback) => {
@@ -53,7 +61,7 @@ describe('Home component', () => {
     mockUseGetTextByLangQuery.mockReturnValue(mockDataForRTKHookInMainPage);
 
     renderWithProviders(<MainPage lang={lang} />);
-    const greetingTitle = screen.getByText(/welcome back/i);
+    const greetingTitle = screen.getByRole('heading', { name: /welcome/i });
 
     expect(greetingTitle).toBeInTheDocument();
   });

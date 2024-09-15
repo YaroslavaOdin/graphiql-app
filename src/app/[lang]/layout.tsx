@@ -22,7 +22,7 @@ export default function RootLayout({ children, params }: RootLayoutProps) {
     <html lang={params.lang}>
       <body className={inter.className}>
         <ReduxProvider>
-          <div className="wrapperGrid">
+          <div data-testid="wrapper-grid" className="wrapperGrid">
             <Header lang={params.lang} />
             {children}
             <Foother lang={params.lang} />

@@ -49,7 +49,7 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
     return `/${lang}/graphiql-client/GRAPHQL/${encodedEndpoint}/${encodedQuery}?${queryString}`;
   }, [endpointState, lang, queryState, queryString]);
 
-  const [keyAndValue] = searchParams.entries()
+  const [keyAndValue] = searchParams.entries();
 
   useEffect(() => {
     async function fetchSchema(): Promise<void> {
@@ -160,7 +160,7 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
                 onChange={e => setHeadersKey(e.target.value)}
               />
               <Input
-               defaultValue={keyAndValue && keyAndValue[1]}
+                defaultValue={keyAndValue && keyAndValue[1]}
                 placeholder={data?.page.graphiql.value}
                 onChange={e => setHeadersValue(e.target.value)}
               />

@@ -20,7 +20,8 @@ interface RESTfullHeadersEditorProps {
 export default function RESTfullHeadersEditor({ setHeaders, headers }: RESTfullHeadersEditorProps) {
   const [key, setKey] = useState('');
   const [value, setValue] = useState('');
-  // const searchParams = useSearchParams()
+  const searchParams = useSearchParams();
+  const [keyAndValue] = searchParams.entries();
 
   const { lang }: { lang: Locale } = useParams();
   const { data } = useGetTextByLangQuery(lang);
@@ -39,8 +40,16 @@ export default function RESTfullHeadersEditor({ setHeaders, headers }: RESTfullH
           {Object.keys(headers).length !== 0 &&
             Object.keys(headers).map((item, i) => <div key={i}>{item}</div>)}
           <AccordionContent className="flex">
-            <Input value={key} placeholder="key" onChange={e => setKey(e.target.value)} />
-            <Input value={value} placeholder="value" onChange={e => setValue(e.target.value)} />
+            <Input
+              defaultValue={keyAndValue && keyAndValue[0]}
+              placeholder="key"
+              onChange={e => setKey(e.target.value)}
+            />
+            <Input
+              defaultValue={keyAndValue && keyAndValue[1]}
+              placeholder="value"
+              onChange={e => setValue(e.target.value)}
+            />
             <Button onClick={handleHeadersChange}>{data?.page.restClient.addHeaders}</Button>
           </AccordionContent>
         </label>

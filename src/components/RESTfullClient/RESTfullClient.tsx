@@ -4,7 +4,7 @@ import ReactCodeMirror from '@uiw/react-codemirror';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
 import nextBase64 from 'next-base64';
 import { useGetTextByLangQuery } from '../../store/reducers/apiLanguageSlice';
 import { Locale } from '../../../i18n.config';
@@ -18,6 +18,8 @@ import ComponentForCheckAuth from '../componentForCheckAuth/componentForCheckAut
 export default function RESTfullClient({ children }: { children: React.JSX.Element }): JSX.Element {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathName = usePathname();
+
   const {
     lang,
     method,
@@ -31,6 +33,7 @@ export default function RESTfullClient({ children }: { children: React.JSX.Eleme
   const [variables, setVariables] = useState<{ [key: string]: unknown }>({});
   const [headers, setHeaders] = useState<{ [key: string]: string }>({});
   const [valueCodeMirror, setValueCodeMirror] = useState('');
+  const [headersParams, setHeadersParams] = useState<string>('');
 
   const { data } = useGetTextByLangQuery(lang);
   const { storeRequest } = useActions();
@@ -38,8 +41,8 @@ export default function RESTfullClient({ children }: { children: React.JSX.Eleme
   const newPath = useMemo(() => {
     const encodedEndpoint = nextBase64.encode(endpointState).replace(/=/g, '');
     const encodedBody = nextBase64.encode(bodyState).replace(/=/g, '');
-    return `/${lang}/restfull-client/${methodState}/${encodedEndpoint}/${encodedBody}`;
-  }, [methodState, endpointState, bodyState, lang]);
+    return `/${lang}/restfull-client/${methodState}/${encodedEndpoint}/${encodedBody}?${headersParams}`;
+  }, [methodState, endpointState, bodyState, lang, headersParams]);
 
   const updateSearchQuery = useCallback(
     (updatedQuery: { [key: string]: string }) => {
@@ -52,9 +55,10 @@ export default function RESTfullClient({ children }: { children: React.JSX.Eleme
         }
       });
       const queryString = params.toString();
-      return queryString ? `${newPath}?${queryString}` : newPath;
+      setHeadersParams(queryString);
+      return queryString;
     },
-    [searchParams, newPath],
+    [searchParams],
   );
 
   useEffect(() => {
@@ -94,8 +98,8 @@ export default function RESTfullClient({ children }: { children: React.JSX.Eleme
   }
 
   useEffect(() => {
-    history.replaceState(null, '', updateSearchQuery(headers));
-  }, [headers, updateSearchQuery]);
+    history.replaceState(null, '', pathName + '?' + updateSearchQuery(headers));
+  }, [headers, pathName, updateSearchQuery]);
 
   useEffect(() => {
     setValueCodeMirror(prettifyJSON(bodyState));

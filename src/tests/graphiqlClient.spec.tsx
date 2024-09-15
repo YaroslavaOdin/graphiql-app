@@ -1,7 +1,7 @@
 import { describe, vi, it, Mock } from 'vitest';
 import { renderWithProviders } from '../utils/test-redux';
 import JSONViewer from '../components/JSONViewer/JSONViewer';
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useGetTextByLangQuery } from '../store/reducers/apiLanguageSlice';
 import { mockDataForRTKHookInMainPage } from '../utils/mock/mockData';
@@ -39,6 +39,7 @@ vi.mock('../store/reducers/apiLanguageSlice', async importOriginal => {
 
 describe('GraphiQLClient component', () => {
   it('render GraphiQLClient', () => {
+    (useSearchParams as Mock).mockReturnValue(['key']);
     (useAuthState as Mock).mockReturnValue([null, false]);
     (useGetTextByLangQuery as Mock).mockReturnValue(mockDataForRTKHookInMainPage);
     vi.mocked(useParams).mockReturnValue({ lang: 'en' });

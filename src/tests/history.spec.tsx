@@ -95,9 +95,7 @@ describe('history component', () => {
           request: [],
         },
       },
-    })
-    renderWithProviders(<NoAnyRequests lang={"en" as Locale}/>)
-
-  })
-  
+    });
+    renderWithProviders(<NoAnyRequests lang={'en' as Locale} />);
+  });
 });

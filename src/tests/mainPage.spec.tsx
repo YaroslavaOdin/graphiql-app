@@ -48,7 +48,7 @@ describe('Home component', () => {
       usePathname: () => '/ru',
     }));
   });
-  const lang:Locale = "en";
+  const lang: Locale = 'en';
 
   it('renders correctly with given params and without login', () => {
     const unsubscribeMock = vi.fn();
@@ -61,7 +61,7 @@ describe('Home component', () => {
     mockUseGetTextByLangQuery.mockReturnValue(mockDataForRTKHookInMainPage);
 
     renderWithProviders(<MainPage lang={lang} />);
-    const greetingTitle = screen.getByRole('heading', {  name: /welcome/i})
+    const greetingTitle = screen.getByRole('heading', { name: /welcome/i });
 
     expect(greetingTitle).toBeInTheDocument();
   });

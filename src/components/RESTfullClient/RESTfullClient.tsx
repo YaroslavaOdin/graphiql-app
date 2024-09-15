@@ -49,7 +49,7 @@ export default function RESTfullClient({ children }: { children: React.JSX.Eleme
   };
 
   const HandleFocusOut = (): void => {
-    replaceVariables()
+    replaceVariables();
     history.replaceState(null, '', newPath);
   };
 
@@ -63,7 +63,7 @@ export default function RESTfullClient({ children }: { children: React.JSX.Eleme
 
   function replaceVariables() {
     if (Object.keys(variables).length !== 0) {
-      let res = valueCodeMirror; 
+      let res = valueCodeMirror;
 
       for (const key in variables) {
         const regex = new RegExp(`{{${key}}}`, 'g');
@@ -74,7 +74,6 @@ export default function RESTfullClient({ children }: { children: React.JSX.Eleme
       setBodyState(valueCodeMirror);
     }
   }
-
 
   return (
     <div className="p-5 container max-w-[1200px]">

@@ -7,7 +7,6 @@ vi.mock('firebase/auth', () => ({
   getAuth: vi.fn(),
 }));
 
-
 describe('SignIn Component', () => {
   beforeEach(() => {
     vi.mock('next/navigation', () => ({
@@ -25,5 +24,4 @@ describe('SignIn Component', () => {
     const buttonLink = screen.getByRole('button', { name: /выйти/i });
     expect(buttonLink).toBeInTheDocument();
   });
-
 });

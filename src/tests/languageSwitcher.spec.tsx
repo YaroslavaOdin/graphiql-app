@@ -1,12 +1,11 @@
 import { describe, vi, it, Mock } from 'vitest';
 import { screen } from '@testing-library/react';
 import { renderWithProviders } from '../utils/test-redux';
-import RESTfullClient from '../components/RESTfullClient/RESTfullClient';
-import JSONViewer from '../components/JSONViewer/JSONViewer';
 import { useParams } from 'next/navigation';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useGetTextByLangQuery } from '../store/reducers/apiLanguageSlice';
 import { mockDataForRTKHookInMainPage } from '../utils/mock/mockData';
+import LanguageSwitcher from '../components/languageSwitcher/languageSwitcher.component';
 
 vi.mock('firebase/auth', () => ({
   onAuthStateChanged: vi.fn(),
@@ -22,6 +21,7 @@ vi.mock('next/navigation', () => ({
     push: vi.fn(),
   }),
   useParams: vi.fn(),
+  usePathname: vi.fn(),
 }));
 
 interface ApiLanguageSlice {
@@ -36,21 +36,14 @@ vi.mock('../store/reducers/apiLanguageSlice', async importOriginal => {
   };
 });
 
-describe('RESTfullClient component', () => {
-  it('render RESTfullClient', () => {
+describe('LanguageSwicher component', () => {
+  it('render LanguageSwicher', () => {
     (useAuthState as Mock).mockReturnValue([null, false]);
     (useGetTextByLangQuery as Mock).mockReturnValue(mockDataForRTKHookInMainPage);
-    vi.mocked(useParams).mockReturnValue({
-      lang: 'en',
-      method: 'GET',
-      endpoint: 'aHR0cHM6Ly9hcGkuZXNjdWVsYWpzLmNvL2FwaS92MS9wcm9kdWN0cw',
-    });
+    vi.mocked(useParams).mockReturnValue({ lang: 'en' });
+    const { lang }: { lang: 'en' | 'ru' } = useParams();
 
-    renderWithProviders(
-      <RESTfullClient>
-        <JSONViewer value="" statusCode={undefined} />
-      </RESTfullClient>,
-    );
+    renderWithProviders(<LanguageSwitcher lang={lang} />);
 
     screen.logTestingPlaygroundURL();
   });

@@ -30,7 +30,7 @@ export default function MainPage({ lang }: MainPageProps): JSX.Element {
         {user ? (
           <div>
             <div className="flex flex-wrap gap-4 justify-center font-semibold text-5xl mb-10 mt-5">
-              <h1 className='text-center'> {`${data?.page.home.greeting}, `} </h1>{' '}
+              <h1 className="text-center"> {`${data?.page.home.greeting}, `} </h1>{' '}
               <span role="displayName">{user?.displayName}</span>
             </div>
 

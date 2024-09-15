@@ -3,7 +3,7 @@ import { getByRole } from '@testing-library/react';
 import { renderWithProviders } from '../utils/test-redux';
 // import RESTfullClient from '../components/RESTfullClient/RESTfullClient';
 // import JSONViewer from '../components/JSONViewer/JSONViewer';
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useGetTextByLangQuery } from '../store/reducers/apiLanguageSlice';
 import { mockDataForRTKHookInMainPage } from '../utils/mock/mockData';
@@ -25,6 +25,7 @@ vi.mock('next/navigation', () => ({
   }),
   useParams: vi.fn(),
   useSearchParams: vi.fn(),
+  usePathname: vi.fn(),
 }));
 
 interface ApiLanguageSlice {
@@ -40,21 +41,13 @@ vi.mock('../store/reducers/apiLanguageSlice', async importOriginal => {
 });
 
 describe('RESTfullClient component', () => {
-  // const params =  { method: "GET", endpoint: 'aHR0cHM6Ly9hcGkuZXNjdWVsYWpzLmNvL2FwaS92MS9wcm9kdWN0cw' }
-
   it('render RESTfullClient without method and endpoint', async () => {
+    (useSearchParams as Mock).mockReturnValue(['key']);
     (useAuthState as Mock).mockReturnValue([{ uuid: 'test-user' }, false]);
     (useGetTextByLangQuery as Mock).mockReturnValue(mockDataForRTKHookInMainPage);
     vi.mocked(useParams).mockReturnValue({ lang: 'en' });
 
     const { container } = renderWithProviders(<RESTfullPage />);
-
-    //  const {container} =  renderWithProviders(
-    //     <RESTfullClient>
-    //       <JSONViewer value="" statusCode={undefined} />
-    //     </RESTfullClient>,
-    //   );
-
     const input = getByRole(container, 'textbox', { name: /endpoint:/i });
     expect(input).toBeInTheDocument();
   });
@@ -66,7 +59,5 @@ describe('RESTfullClient component', () => {
       method: 'GET',
       endpoint: 'aHR0cHM6Ly9hcGkuZXNjdWVsYWpzLmNvL2FwaS92MS9wcm9kdWN0cw',
     });
-
-    // renderWithProviders(<RESTfullPageMethodEndpoint params={params}/>);
   });
 });

@@ -1,5 +1,4 @@
 import { describe, vi, it, Mock } from 'vitest';
-import { screen } from '@testing-library/react';
 import { renderWithProviders } from '../utils/test-redux';
 import { useParams, usePathname } from 'next/navigation';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -45,7 +44,5 @@ describe('Header component', () => {
     const { lang }: { lang: 'en' | 'ru' } = useParams();
 
     renderWithProviders(<Header lang={lang} />);
-
-    screen.logTestingPlaygroundURL();
   });
 });

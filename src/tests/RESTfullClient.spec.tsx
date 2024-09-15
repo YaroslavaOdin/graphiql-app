@@ -1,14 +1,11 @@
 import { describe, expect, vi, it, Mock } from 'vitest';
 import { getByRole } from '@testing-library/react';
 import { renderWithProviders } from '../utils/test-redux';
-// import RESTfullClient from '../components/RESTfullClient/RESTfullClient';
-// import JSONViewer from '../components/JSONViewer/JSONViewer';
 import { useParams, useSearchParams } from 'next/navigation';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useGetTextByLangQuery } from '../store/reducers/apiLanguageSlice';
 import { mockDataForRTKHookInMainPage } from '../utils/mock/mockData';
 import RESTfullPage from '../app/[lang]/restfull-client/page';
-// import RESTfullPageMethodEndpoint from '../app/[lang]/restfull-client/[method]/[endpoint]/page';
 
 vi.mock('firebase/auth', () => ({
   onAuthStateChanged: vi.fn(),

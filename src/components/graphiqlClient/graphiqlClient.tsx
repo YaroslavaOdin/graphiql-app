@@ -12,17 +12,9 @@ import { Locale } from '../../../i18n.config';
 import prettify from '../../utils/prettify';
 import GraphqlVariablesEditor from '../graphqlVariablesEditor/graphqlVariablesEditor.component';
 import { decodedQueryType } from '../../interfaces/interfaces';
-// import {
-//   DocExplorer,
-//   EditorContextProvider,
-//   ExplorerContextProvider,
-//   SchemaContextProvider,
-// } from '@graphiql/react';
-
 import { buildClientSchema, getIntrospectionQuery, GraphQLSchema } from 'graphql';
 import useActions from '../../hooks/useAction';
 import ComponentForCheckAuth from '../componentForCheckAuth/componentForCheckAuth.component';
-// import { FaRegFileCode } from 'react-icons/fa'; 
 import SchemaViewer from '../SchemaViewer/SchemaViewer';
 
 export default function GraphiQLClient({ children }: { children: React.JSX.Element }): JSX.Element {
@@ -196,35 +188,6 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
         {children}
       </div>
       <SchemaViewer schema={schema}  sdlState={sdlState}/>
-      {/* {schema && (
-  <div className="p-4 bg-gray-100 rounded-lg shadow-lg">
-    <EditorContextProvider>
-      <SchemaContextProvider fetcher={createGraphiQLFetcher({ url: sdlState })}>
-        <ExplorerContextProvider>
-          <div className="space-y-4">
-            <h2 className="text-2xl font-bold text-gray-800 flex items-center">
-              <FaRegFileCode className="mr-2 text-gray-600" /> GraphiQL Explorer
-            </h2>
-            <div className="overflow-visible p-4 bg-white border border-gray-200 rounded-md">
-              <DocExplorer />
-            </div>
-          </div>
-        </ExplorerContextProvider>
-      </SchemaContextProvider>
-    </EditorContextProvider>
-  </div>
-)} */}
-      {/* {schema && (
-        <div className="overflow-visible">
-          <EditorContextProvider>
-            <SchemaContextProvider fetcher={createGraphiQLFetcher({ url: sdlState })}>
-              <ExplorerContextProvider>
-                <DocExplorer />
-              </ExplorerContextProvider>
-            </SchemaContextProvider>
-          </EditorContextProvider>
-        </div>
-      )} */}
       <ComponentForCheckAuth />
     </div>
   );

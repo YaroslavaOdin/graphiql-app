@@ -1,16 +1,10 @@
 'use client';
-
-import { useEffect } from 'react';
-
 interface ErrorProps {
   error: Error & { digest?: string };
   reset: () => void;
 }
 
 export default function Error({ error, reset }: ErrorProps) {
-  useEffect(() => {
-    console.error(error);
-  }, [error]);
 
   return (
     <main className="flex h-full flex-col items-center justify-center">

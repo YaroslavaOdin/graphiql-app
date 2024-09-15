@@ -1,6 +1,5 @@
 /* eslint-disable react-compiler/react-compiler */
 
-//import 'server-only';
 import JSONViewer from '../JSONViewer/JSONViewer';
 import prettify from '../../utils/prettify';
 

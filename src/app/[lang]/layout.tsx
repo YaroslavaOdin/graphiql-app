@@ -6,6 +6,8 @@ import { Locale, i18n } from '../../../i18n.config';
 import Header from '../../components/header/header.component';
 import ReduxProvider from '../../hoc/ReduxProvider';
 import Foother from '../../components/foother/foother.component';
+import 'graphiql/graphiql.css';
+
 const inter = Inter({ subsets: ['latin'] });
 
 export async function generateStaticParams() {

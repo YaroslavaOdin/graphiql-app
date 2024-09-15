@@ -27,6 +27,7 @@ vi.mock('next/navigation', () => ({
     push: vi.fn(),
   }),
   useParams: vi.fn(),
+  usePathname: () => '/en/logIn',
 }));
 
 async function resolvedComponent(

@@ -1,5 +1,4 @@
 import { describe, vi, it, Mock } from 'vitest';
-import { screen } from '@testing-library/react';
 import { renderWithProviders } from '../utils/test-redux';
 import { useParams } from 'next/navigation';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -44,7 +43,5 @@ describe('LanguageSwicher component', () => {
     const { lang }: { lang: 'en' | 'ru' } = useParams();
 
     renderWithProviders(<LanguageSwitcher lang={lang} />);
-
-    screen.logTestingPlaygroundURL();
   });
 });

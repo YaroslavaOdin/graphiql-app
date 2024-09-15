@@ -12,16 +12,18 @@ import { Locale } from '../../../i18n.config';
 import prettify from '../../utils/prettify';
 import GraphqlVariablesEditor from '../graphqlVariablesEditor/graphqlVariablesEditor.component';
 import { decodedQueryType } from '../../interfaces/interfaces';
-import {
-  DocExplorer,
-  EditorContextProvider,
-  ExplorerContextProvider,
-  SchemaContextProvider,
-} from '@graphiql/react';
-import { createGraphiQLFetcher } from '@graphiql/toolkit';
+// import {
+//   DocExplorer,
+//   EditorContextProvider,
+//   ExplorerContextProvider,
+//   SchemaContextProvider,
+// } from '@graphiql/react';
+
 import { buildClientSchema, getIntrospectionQuery, GraphQLSchema } from 'graphql';
 import useActions from '../../hooks/useAction';
 import ComponentForCheckAuth from '../componentForCheckAuth/componentForCheckAuth.component';
+// import { FaRegFileCode } from 'react-icons/fa'; 
+import SchemaViewer from '../SchemaViewer/SchemaViewer';
 
 export default function GraphiQLClient({ children }: { children: React.JSX.Element }): JSX.Element {
   const [endpointState, setEndpointState] = useState<string>('');
@@ -48,6 +50,8 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
 
     return `/${lang}/graphiql-client/GRAPHQL/${encodedEndpoint}/${encodedQuery}?${queryString}`;
   }, [endpointState, lang, queryState, queryString]);
+
+  const [keyAndValue] = searchParams.entries();
 
   useEffect(() => {
     async function fetchSchema(): Promise<void> {
@@ -124,7 +128,7 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
       setHeadersValue('');
     }
   }
-
+  console.log(schema)
   return (
     <div className="p-2 container max-w-[1200px]">
       <p className="text-center">{data?.page.graphiql.title}</p>
@@ -153,12 +157,12 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
             <AccordionTrigger>{data?.page.graphiql.headers}</AccordionTrigger>
             <AccordionContent className="flex">
               <Input
-                value={headersKey}
+                defaultValue={keyAndValue && keyAndValue[0]}
                 placeholder={data?.page.graphiql.key}
                 onChange={e => setHeadersKey(e.target.value)}
               />
               <Input
-                value={headersValue}
+                defaultValue={keyAndValue && keyAndValue[1]}
                 placeholder={data?.page.graphiql.value}
                 onChange={e => setHeadersValue(e.target.value)}
               />
@@ -191,7 +195,26 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
         <label>{data?.page.graphiql.response}</label>
         {children}
       </div>
-      {schema && (
+      <SchemaViewer schema={schema}  sdlState={sdlState}/>
+      {/* {schema && (
+  <div className="p-4 bg-gray-100 rounded-lg shadow-lg">
+    <EditorContextProvider>
+      <SchemaContextProvider fetcher={createGraphiQLFetcher({ url: sdlState })}>
+        <ExplorerContextProvider>
+          <div className="space-y-4">
+            <h2 className="text-2xl font-bold text-gray-800 flex items-center">
+              <FaRegFileCode className="mr-2 text-gray-600" /> GraphiQL Explorer
+            </h2>
+            <div className="overflow-visible p-4 bg-white border border-gray-200 rounded-md">
+              <DocExplorer />
+            </div>
+          </div>
+        </ExplorerContextProvider>
+      </SchemaContextProvider>
+    </EditorContextProvider>
+  </div>
+)} */}
+      {/* {schema && (
         <div className="overflow-visible">
           <EditorContextProvider>
             <SchemaContextProvider fetcher={createGraphiQLFetcher({ url: sdlState })}>
@@ -201,7 +224,7 @@ export default function GraphiQLClient({ children }: { children: React.JSX.Eleme
             </SchemaContextProvider>
           </EditorContextProvider>
         </div>
-      )}
+      )} */}
       <ComponentForCheckAuth />
     </div>
   );

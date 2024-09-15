@@ -11,8 +11,6 @@ import { Locale } from '../../../i18n.config';
 import MethodSwitcher from '../RESTfullMethodSwitcher/RESTfullMethodSwitcher.component';
 import { prettifyJSON } from '../../utils/prettifyJSON';
 import RESTfullvariablesEditor from '../RESTfullvariablesEditor/RESTfullvariablesEditor.component';
-import { jsonrepair } from 'jsonrepair';
-import { findNestedValueIfExist } from '../../utils/functionHelpers';
 import RESTfullHeadersEditor from '../RESTfullHeadersEditor/RESTfullHeadersEditor.component';
 import useActions from '../../hooks/useAction';
 import ComponentForCheckAuth from '../componentForCheckAuth/componentForCheckAuth.component';
@@ -30,9 +28,6 @@ export default function RESTfullClient({ children }: { children: React.JSX.Eleme
   const [endpointState, setEndpointState] = useState<string>(nextBase64.decode(endpoint || ''));
   const [bodyState, setBodyState] = useState<string>(nextBase64.decode(body || ''));
   const [methodState, setMethodState] = useState<string>(method || 'GET');
-  const [endpointState, setEndpointState] = useState<string>('');
-  const [bodyState, setBodyState] = useState<string>('');
-  const [methodState, setMethodState] = useState<string>('');
   const [variables, setVariables] = useState<{ [key: string]: unknown }>({});
   const [headers, setHeaders] = useState<{ [key: string]: string }>({});
   const [valueCodeMirror, setValueCodeMirror] = useState('');
